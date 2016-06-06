@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_main);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
@@ -53,15 +53,15 @@ public class MainActivity extends AppCompatActivity {
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
-            String strx = new String("X : " + (int)x + " rad/s");
-            String stry = new String("Y : " + (int)y + " rad/s");
-            String strz = new String("Z : " + (int)z + " rad/s");
+            String strX = "X : " + (int)x + " rad/s";
+            String strY = "Y : " + (int)y + " rad/s";
+            String strZ = "Z : " + (int)z + " rad/s";
 
 
 
-            textX.setText(strx);
-            textY.setText(stry);
-            textZ.setText(strz);
+            textX.setText(strX);
+            textY.setText(strY);
+            textZ.setText(strZ);
         }
     };
 }

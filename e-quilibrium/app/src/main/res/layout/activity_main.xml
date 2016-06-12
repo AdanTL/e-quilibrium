@@ -9,15 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.app.sirdreadlocks.e_quilibrium.MainActivity">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/titleText"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="59dp"
-        android:text="e-quilibrium" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,4 +16,14 @@
         android:id="@+id/startButton"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="e-quilibrium"
+        android:id="@+id/mainText"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="94dp" />
 </RelativeLayout>

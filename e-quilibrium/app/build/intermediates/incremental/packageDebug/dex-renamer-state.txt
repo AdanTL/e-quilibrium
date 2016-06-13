@@ -1,7 +1,0 @@
-#Mon Jun 13 02:36:37 CEST 2016
-base.0=/home/adan/workspace/e-quilibrium/e-quilibrium/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_0c53d242135c917002c98014e2f70dabd8bbac53
-renamed.1=classes2.dex
-renamed.0=classes.dex
-file.1=/home/adan/workspace/e-quilibrium/e-quilibrium/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_9b6b19ca24f3e27735c88ee7cf2788f38b16a9fa/classes.dex
-base.1=/home/adan/workspace/e-quilibrium/e-quilibrium/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_9b6b19ca24f3e27735c88ee7cf2788f38b16a9fa
-file.0=/home/adan/workspace/e-quilibrium/e-quilibrium/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_0c53d242135c917002c98014e2f70dabd8bbac53/classes.dex

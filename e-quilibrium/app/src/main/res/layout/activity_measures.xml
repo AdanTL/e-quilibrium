@@ -12,22 +12,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/textView2" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="X"
+        android:text="@string/x"
         android:id="@+id/textX"
-        android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Y"
+        android:text="@string/y"
         android:id="@+id/textY"
         android:layout_below="@+id/textX"
         android:layout_alignParentLeft="true"
@@ -36,9 +29,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Z"
+        android:text="@string/z"
         android:id="@+id/textZ"
         android:layout_below="@+id/textY"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@android:string/ok"
+        android:id="@+id/buttonOk"
+        android:layout_below="@+id/textZ"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp" />
+
 </RelativeLayout>

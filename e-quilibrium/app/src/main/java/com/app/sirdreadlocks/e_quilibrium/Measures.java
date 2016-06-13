@@ -1,5 +1,6 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -7,21 +8,19 @@ import android.hardware.SensorManager;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
-/*public class MainActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-}*/
+import java.util.Date;
+import java.util.HashMap;
 
 public class Measures extends AppCompatActivity {
-    TextView textX, textY, textZ;
-    SensorManager sensorManager;
-    Sensor sensor;
+    private TextView textX, textY, textZ;
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private Button btnOk;
+    private HashMap<Integer, String> results;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +32,21 @@ public class Measures extends AppCompatActivity {
         textX = (TextView) findViewById(R.id.textX);
         textY = (TextView) findViewById(R.id.textY);
         textZ = (TextView) findViewById(R.id.textZ);
+
+        btnOk = (Button) findViewById(R.id.buttonOk);
+
+        results = new HashMap<>();
+
+        btnOk.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+
+                Intent intent =
+                        new Intent(Measures.this, Results.class);
+                intent.putExtra("RESULTS",results);
+
+                startActivity(intent);
+            }
+        });
     }
 
     public void onResume() {
@@ -57,6 +71,9 @@ public class Measures extends AppCompatActivity {
             String strY = "Y : " + (int)y + " rad/s";
             String strZ = "Z : " + (int)z + " rad/s";
 
+            Date now = new Date();
+
+            results.put(now.hashCode(), String.valueOf(x));
 
 
             textX.setText(strX);

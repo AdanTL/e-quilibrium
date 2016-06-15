@@ -6,6 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +21,8 @@ public class Measures extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor sensor;
     private Button btnOk;
-    private HashMap<Integer, String> results;
+    private HashMap<String, String> results;
+    private long timeStart;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,8 @@ public class Measures extends AppCompatActivity {
         btnOk = (Button) findViewById(R.id.buttonOk);
 
         results = new HashMap<>();
+
+        timeStart = System.currentTimeMillis();
 
         btnOk.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
@@ -71,9 +75,9 @@ public class Measures extends AppCompatActivity {
             String strY = "Y : " + (int)y + " rad/s";
             String strZ = "Z : " + (int)z + " rad/s";
 
-            Date now = new Date();
+            long timeNow = System.currentTimeMillis();
 
-            results.put(now.hashCode(), String.valueOf(x));
+            results.put(String.valueOf(timeNow), String.valueOf(x));
 
 
             textX.setText(strX);

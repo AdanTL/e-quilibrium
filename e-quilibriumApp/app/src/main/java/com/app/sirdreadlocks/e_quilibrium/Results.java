@@ -11,7 +11,7 @@ import java.util.Map;
 public class Results extends AppCompatActivity {
     private TextView txtResults;
     private HashMap<Integer, String> results;
-    private String strResults;
+    private String strResults = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

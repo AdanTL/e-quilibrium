@@ -15,13 +15,14 @@ import android.widget.TextView;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Measures extends AppCompatActivity {
     private TextView textX, textY, textZ;
     private SensorManager sensorManager;
     private Sensor sensor;
     private Button btnOk;
-    private HashMap<String, String> results;
+    private LinkedHashMap<String, String> results;
     private long timeStart;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class Measures extends AppCompatActivity {
 
         btnOk = (Button) findViewById(R.id.buttonOk);
 
-        results = new HashMap<>();
+        results = new LinkedHashMap<>();
 
         timeStart = System.currentTimeMillis();
 

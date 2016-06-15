@@ -7,10 +7,12 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Results extends AppCompatActivity {
     private TextView txtResults;
-    private HashMap<Integer, String> results;
+    private Map<String, String> results;
+    private Map<String, String> resultsSorted;
     private String strResults = "";
 
     @Override
@@ -20,10 +22,10 @@ public class Results extends AppCompatActivity {
 
         txtResults = (TextView)findViewById(R.id.resultText);
 
-        results = (HashMap<Integer, String>)this.getIntent().getSerializableExtra("RESULTS");
+        results = (HashMap<String, String>)this.getIntent().getSerializableExtra("RESULTS");
+        resultsSorted = new TreeMap<>(results);
 
-
-        for (Map.Entry<Integer, String> e: results.entrySet()) {
+        for (Map.Entry<String, String> e: resultsSorted.entrySet()) {
             strResults += "["+e.getKey() + "=" + e.getValue()+"]\n";
         }
 

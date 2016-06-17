@@ -30,7 +30,7 @@ public class Measures extends AppCompatActivity {
         setContentView(R.layout.activity_measures);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
         textX = (TextView) findViewById(R.id.textX);
         textY = (TextView) findViewById(R.id.textY);
@@ -72,9 +72,9 @@ public class Measures extends AppCompatActivity {
             float x = event.values[0];
             float y = event.values[1];
             float z = event.values[2];
-            String strX = "X : " + (int)x + " rad/s";
-            String strY = "Y : " + (int)y + " rad/s";
-            String strZ = "Z : " + (int)z + " rad/s";
+            String strX = "X : " + x + " rad/s";
+            String strY = "Y : " + y + " rad/s";
+            String strZ = "Z : " + z + " rad/s";
 
             long timeNow = System.currentTimeMillis();
 

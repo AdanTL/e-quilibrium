@@ -6,31 +6,28 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.content.Context;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 public class Measures extends AppCompatActivity {
     private TextView textX, textY, textZ;
     private SensorManager sensorManager;
-    private Sensor sensor;
+    private Sensor accelerometer, magnetometer;
     private Button btnOk;
-    private LinkedHashMap<String, String> results;
-    private long timeStart;
+    private HashMap<String, String> results;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measures);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         textX = (TextView) findViewById(R.id.textX);
         textY = (TextView) findViewById(R.id.textY);
@@ -38,9 +35,7 @@ public class Measures extends AppCompatActivity {
 
         btnOk = (Button) findViewById(R.id.buttonOk);
 
-        results = new LinkedHashMap<>();
-
-        timeStart = System.currentTimeMillis();
+        results = new HashMap<>();
 
         btnOk.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
@@ -56,34 +51,46 @@ public class Measures extends AppCompatActivity {
 
     public void onResume() {
         super.onResume();
-        sensorManager.registerListener(gyroListener, sensor,
-                SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(sensorListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(sensorListener, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void onStop() {
         super.onStop();
-        sensorManager.unregisterListener(gyroListener);
+        sensorManager.unregisterListener(sensorListener);
     }
 
-    public SensorEventListener gyroListener = new SensorEventListener() {
+    public SensorEventListener sensorListener = new SensorEventListener() {
         public void onAccuracyChanged(Sensor sensor, int acc) { }
 
+        float[] mGravity;
+        float[] mGeomagnetic;
         public void onSensorChanged(SensorEvent event) {
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-            String strX = "X : " + x + " rad/s";
-            String strY = "Y : " + y + " rad/s";
-            String strZ = "Z : " + z + " rad/s";
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+                mGravity = event.values;
+            if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
+                mGeomagnetic = event.values;
+            if (mGravity != null && mGeomagnetic != null) {
+                float R[] = new float[9];
+                float I[] = new float[9];
+                boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+                if (success) {
+                    float orientation[] = new float[3];
+                    SensorManager.getOrientation(R, orientation);
+                    //Conversion of Math.toDegrees is not so exact as I would like
+                    double azimuth = Math.toDegrees(orientation[0]);
+                    double pitch = Math.toDegrees(orientation[1]);
+                    double roll = Math.toDegrees(orientation[2]);
 
-            long timeNow = System.currentTimeMillis();
+                    //Show all data but only need pitch(rotation in X axis)
+                    textX.setText("A : " + azimuth + " º");
+                    textY.setText("P : " + pitch + " º");//pitch goes from -90 to 90
+                    textZ.setText("R : " + roll + " º");
 
-            results.put(String.valueOf(timeNow), String.valueOf(x));
-
-
-            textX.setText(strX);
-            textY.setText(strY);
-            textZ.setText(strZ);
+                    //Save pitch in map with the current time
+                    results.put(String.valueOf(System.currentTimeMillis()), String.valueOf(pitch));
+                }
+            }
         }
     };
 }

@@ -26,7 +26,7 @@ public class Results extends AppCompatActivity {
         resultsSorted = new TreeMap<>(results);
 
         for (Map.Entry<String, String> e: resultsSorted.entrySet()) {
-            strResults += "["+e.getKey() + "=" + e.getValue()+"]\n";
+            strResults += "["+e.getKey() + "=>" + e.getValue()+"º]\n";
         }
 
         txtResults.setText(strResults);

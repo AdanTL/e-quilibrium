@@ -11,8 +11,8 @@ import java.util.TreeMap;
 
 public class Results extends AppCompatActivity {
     private TextView txtResults;
-    private Map<String, String> results;
-    private Map<String, String> resultsSorted;
+    private Map<String, HashMap<String, String>> results;
+    private Map<String, HashMap<String, String>> resultsSorted;
     private String strResults = "";
 
     @Override
@@ -22,11 +22,11 @@ public class Results extends AppCompatActivity {
 
         txtResults = (TextView)findViewById(R.id.resultText);
 
-        results = (HashMap<String, String>)this.getIntent().getSerializableExtra("RESULTS");
+        results = (HashMap<String, HashMap<String, String>>)this.getIntent().getSerializableExtra("RESULTS");
         resultsSorted = new TreeMap<>(results);
 
-        for (Map.Entry<String, String> e: resultsSorted.entrySet()) {
-            strResults += "["+e.getKey() + "=>" + e.getValue()+"º]\n";
+        for (Map.Entry<String, HashMap<String, String>> e: resultsSorted.entrySet()) {
+            strResults += "["+e.getKey() + "=>\t:" + e.getValue()+"\n";
         }
 
         txtResults.setText(strResults);

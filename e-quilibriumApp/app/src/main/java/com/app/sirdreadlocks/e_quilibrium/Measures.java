@@ -19,7 +19,7 @@ public class Measures extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor accelerometer, magnetometer;
     private Button btnOk;
-    private HashMap<String, String> results;
+    private HashMap<String, HashMap<String, String>> results;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +62,6 @@ public class Measures extends AppCompatActivity {
 
     public SensorEventListener sensorListener = new SensorEventListener() {
         public void onAccuracyChanged(Sensor sensor, int acc) { }
-
         float[] mGravity;
         float[] mGeomagnetic;
         public void onSensorChanged(SensorEvent event) {
@@ -75,6 +74,7 @@ public class Measures extends AppCompatActivity {
                 float I[] = new float[9];
                 boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
                 if (success) {
+                    HashMap<String, String> pair = new HashMap<>();
                     float orientation[] = new float[3];
                     SensorManager.getOrientation(R, orientation);
                     //Conversion of Math.toDegrees is not so exact as I would like
@@ -82,13 +82,16 @@ public class Measures extends AppCompatActivity {
                     double pitch = Math.toDegrees(orientation[1]);
                     double roll = Math.toDegrees(orientation[2]);
 
-                    //Show all data but only need pitch(rotation in X axis)
-                    textX.setText("A : " + azimuth + " º");
+                    //Show all data but only need pitch(rotation in X axis) and roll (rotation in Y)
+                    textX.setText("A : " + azimuth + " º");//useless for our purpose
                     textY.setText("P : " + pitch + " º");//pitch goes from -90 to 90
-                    textZ.setText("R : " + roll + " º");
+                    textZ.setText("R : " + roll + " º");//roll goes from -90 to 90
 
-                    //Save pitch in map with the current time
-                    results.put(String.valueOf(System.currentTimeMillis()), String.valueOf(pitch));
+                    //Save a pair of data X & Y
+                    pair.put(String.valueOf(pitch),String.valueOf(roll));
+
+                    //Save pair in map with the current time
+                    results.put(String.valueOf(System.currentTimeMillis()), pair);
                 }
             }
         }

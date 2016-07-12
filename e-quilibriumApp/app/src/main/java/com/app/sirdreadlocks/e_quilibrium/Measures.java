@@ -1,6 +1,10 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,14 +24,22 @@ public class Measures extends AppCompatActivity {
     private Sensor accelerometer, magnetometer;
     private Button btnOk;
     private HashMap<String, HashMap<String, String>> results;
+    public double pitch, roll, azimuth;
 
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_measures);
-
+        results = new HashMap<>();
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        super.onCreate(savedInstanceState);
+        Plot plot = new Plot(this);
+        setContentView(plot);
+
+        //XML View
+        /*setContentView(R.layout.activity_measures);
+
+
 
         textX = (TextView) findViewById(R.id.textX);
         textY = (TextView) findViewById(R.id.textY);
@@ -35,7 +47,7 @@ public class Measures extends AppCompatActivity {
 
         btnOk = (Button) findViewById(R.id.buttonOk);
 
-        results = new HashMap<>();
+
 
         btnOk.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
@@ -46,7 +58,35 @@ public class Measures extends AppCompatActivity {
 
                 startActivity(intent);
             }
-        });
+        });*/
+    }
+
+    class Plot extends View{
+        float x = 0;
+        float y = 0;
+        Path path = new Path();
+
+        public Plot(Context context) {
+            super(context);
+        }
+        public void onDraw(Canvas canvas){
+            Paint paint = new Paint();
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(Color.GREEN);
+            paint.setStrokeWidth(6);
+            path.moveTo(800,800);
+            x = (float)getPitch();
+            y = (float)getRoll();
+            path.lineTo(x,y);
+            canvas.drawCircle(800,800,400,paint);
+            canvas.drawPath(path,paint);
+
+        }
+
+
+
+
+
     }
 
     public void onResume() {
@@ -58,6 +98,13 @@ public class Measures extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         sensorManager.unregisterListener(sensorListener);
+    }
+
+    public double getPitch(){
+        return pitch;
+    }
+    public double getRoll(){
+        return roll;
     }
 
     public SensorEventListener sensorListener = new SensorEventListener() {
@@ -78,14 +125,14 @@ public class Measures extends AppCompatActivity {
                     float orientation[] = new float[3];
                     SensorManager.getOrientation(R, orientation);
                     //Conversion of Math.toDegrees is not so exact as I would like
-                    double azimuth = Math.toDegrees(orientation[0]);
-                    double pitch = Math.toDegrees(orientation[1]);
-                    double roll = Math.toDegrees(orientation[2]);
+                    azimuth = Math.toDegrees(orientation[0]);
+                    pitch = Math.toDegrees(orientation[1]);
+                    roll = Math.toDegrees(orientation[2]);
 
                     //Show all data but only need pitch(rotation in X axis) and roll (rotation in Y)
-                    textX.setText("A : " + azimuth + " º");//useless for our purpose
+                    /*textX.setText("A : " + azimuth + " º");//useless for our purpose
                     textY.setText("P : " + pitch + " º");//pitch goes from -90 to 90
-                    textZ.setText("R : " + roll + " º");//roll goes from -90 to 90
+                    textZ.setText("R : " + roll + " º");//roll goes from -90 to 90*/
 
                     //Save a pair of data X & Y
                     pair.put(String.valueOf(pitch),String.valueOf(roll));

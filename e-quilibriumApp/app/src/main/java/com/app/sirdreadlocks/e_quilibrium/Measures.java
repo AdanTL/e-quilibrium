@@ -13,6 +13,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -33,13 +34,10 @@ public class Measures extends AppCompatActivity {
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         super.onCreate(savedInstanceState);
-        Plot plot = new Plot(this);
-        setContentView(plot);
-
         //XML View
-        /*setContentView(R.layout.activity_measures);
+        setContentView(R.layout.activity_measures);
 
-
+        addContentView(new Plot(this), new ViewGroup.LayoutParams(1000,1000));
 
         textX = (TextView) findViewById(R.id.textX);
         textY = (TextView) findViewById(R.id.textY);
@@ -58,7 +56,7 @@ public class Measures extends AppCompatActivity {
 
                 startActivity(intent);
             }
-        });*/
+        });
     }
 
     class Plot extends View{
@@ -72,14 +70,14 @@ public class Measures extends AppCompatActivity {
         public void onDraw(Canvas canvas){
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(Color.GREEN);
+            paint.setColor(Color.BLACK);
             paint.setStrokeWidth(6);
-            path.moveTo(800,800);
-            x = (float)getPitch();
-            y = (float)getRoll();
-            path.lineTo(x,y);
-            canvas.drawCircle(800,800,400,paint);
-            canvas.drawPath(path,paint);
+            //path.moveTo(800,800);
+            x = (float)getPitch()*10+200;
+            y = (float)getRoll()*10+200;
+            //path.lineTo(x,y);
+            canvas.drawCircle(500,500,200,paint);
+            canvas.drawPoint(x,y,paint);
 
         }
 
@@ -130,9 +128,9 @@ public class Measures extends AppCompatActivity {
                     roll = Math.toDegrees(orientation[2]);
 
                     //Show all data but only need pitch(rotation in X axis) and roll (rotation in Y)
-                    /*textX.setText("A : " + azimuth + " º");//useless for our purpose
+                    textX.setText("A : " + azimuth + " º");//useless for our purpose
                     textY.setText("P : " + pitch + " º");//pitch goes from -90 to 90
-                    textZ.setText("R : " + roll + " º");//roll goes from -90 to 90*/
+                    textZ.setText("R : " + roll + " º");//roll goes from -90 to 90
 
                     //Save a pair of data X & Y
                     pair.put(String.valueOf(pitch),String.valueOf(roll));

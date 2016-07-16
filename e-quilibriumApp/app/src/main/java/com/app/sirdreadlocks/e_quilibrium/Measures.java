@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Measures extends AppCompatActivity {
@@ -24,7 +25,7 @@ public class Measures extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor accelerometer, magnetometer;
     private Button btnOk;
-    private HashMap<String, HashMap<String, String>> results;
+    private HashMap<String, ArrayList> results;
     public double pitch, roll, azimuth;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -119,9 +120,10 @@ public class Measures extends AppCompatActivity {
                 float I[] = new float[9];
                 boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
                 if (success) {
-                    HashMap<String, String> pair = new HashMap<>();
+                    ArrayList pair = new ArrayList(2);
                     float orientation[] = new float[3];
                     SensorManager.getOrientation(R, orientation);
+
                     //Conversion of Math.toDegrees is not so exact as I would like
                     azimuth = Math.toDegrees(orientation[0]);
                     pitch = Math.toDegrees(orientation[1]);
@@ -133,7 +135,8 @@ public class Measures extends AppCompatActivity {
                     textZ.setText("R : " + roll + " º");//roll goes from -90 to 90
 
                     //Save a pair of data X & Y
-                    pair.put(String.valueOf(pitch),String.valueOf(roll));
+                    pair.add(0,pitch);
+                    pair.add(1,roll);
 
                     //Save pair in map with the current time
                     results.put(String.valueOf(System.currentTimeMillis()), pair);

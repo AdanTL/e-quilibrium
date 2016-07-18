@@ -18,7 +18,7 @@ import java.util.TreeMap;
 
 public class Results extends AppCompatActivity {
     private TextView txtResults;
-    private Map<String, ArrayList> results;
+    private Map<String, Double[]> results;
     private Map<String, HashMap<String, String>> resultsSorted;
     private String strResults = "";
     private XYPlot plot;
@@ -30,7 +30,7 @@ public class Results extends AppCompatActivity {
         setContentView(R.layout.activity_results);
 
         // get Map from Intent
-        results = (HashMap<String, ArrayList>)this.getIntent().getSerializableExtra("RESULTS");
+        results = (HashMap<String, Double[]>)this.getIntent().getSerializableExtra("RESULTS");
 
         // initialize our XYPlot reference:
         plot = (XYPlot) findViewById(R.id.plot);
@@ -42,10 +42,10 @@ public class Results extends AppCompatActivity {
         plot.setRangeBoundaries(-80, 80, BoundaryMode.FIXED);
 
         //fill series
-        for (Map.Entry<String, ArrayList> e: results.entrySet()) {
-            ArrayList resValues = e.getValue();
-            double x = (double)resValues.get(0);
-            double y = (double)resValues.get(1);
+        for (Map.Entry<String, Double[]> e: results.entrySet()) {
+            Double resValues[] = e.getValue();
+            double x = resValues[0];
+            double y = resValues[1];
             series.addLast(x,y);
         }
 

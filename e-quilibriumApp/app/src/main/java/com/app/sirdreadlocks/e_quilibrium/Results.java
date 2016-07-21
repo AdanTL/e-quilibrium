@@ -2,6 +2,7 @@ package com.app.sirdreadlocks.e_quilibrium;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 import android.graphics.DashPathEffect;
 
@@ -19,7 +20,7 @@ import java.util.TreeMap;
 public class Results extends AppCompatActivity {
     private TextView txtResults;
     private Map<String, Double[]> results;
-    private Map<String, HashMap<String, String>> resultsSorted;
+    private Map<String, Double[]> resultsSorted;
     private String strResults = "";
     private XYPlot plot;
 
@@ -38,14 +39,14 @@ public class Results extends AppCompatActivity {
         SimpleXYSeries series = new SimpleXYSeries("Series");
 
         // set domain and range
-        plot.setDomainBoundaries(-80, 80, BoundaryMode.FIXED);
-        plot.setRangeBoundaries(-80, 80, BoundaryMode.FIXED);
+        plot.setDomainBoundaries(-50, 50, BoundaryMode.FIXED);
+        plot.setRangeBoundaries(-50, 50, BoundaryMode.FIXED);
 
         //fill series
         for (Map.Entry<String, Double[]> e: results.entrySet()) {
             Double resValues[] = e.getValue();
-            double x = resValues[0];
-            double y = resValues[1];
+            Double x = resValues[0];
+            Double y = resValues[1];
             series.addLast(x,y);
         }
 
@@ -64,21 +65,18 @@ public class Results extends AppCompatActivity {
 
         // rotate domain labels 45 degrees to make them more compact horizontally:
         plot.getGraphWidget().setDomainLabelOrientation(-45);
-    }
-/*    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
 
-        plot = (XYPlot) findViewById(R.id.plot);
 
-        results = (HashMap<String, HashMap<String, String>>)this.getIntent().getSerializableExtra("RESULTS");
+        results = (HashMap<String, Double[]>)this.getIntent().getSerializableExtra("RESULTS");
         resultsSorted = new TreeMap<>(results);
 
-        for (Map.Entry<String, HashMap<String, String>> e: resultsSorted.entrySet()) {
-            strResults += "["+e.getKey() + "=>\t:" + e.getValue()+"\n";
+        for (Map.Entry<String, Double[]> e: resultsSorted.entrySet()) {
+            strResults += "["+e.getKey() + "=>\t:" + e.getValue()[0] +", " + e.getValue()[1] + "\n";
         }
-
+        txtResults = (TextView) findViewById(R.id.txtResults);
+        txtResults.setMovementMethod(new ScrollingMovementMethod());
         txtResults.setText(strResults);
-    }*/
+
+    }
+
 }

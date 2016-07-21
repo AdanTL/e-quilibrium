@@ -31,7 +31,7 @@ public class Measures extends AppCompatActivity {
     private Button btnOk;
     private HashMap<String, Double[]> results;
     private AsyncGet asyncTask;
-    public double pitch, roll, azimuth;
+    public Double pitch = null, roll = null, azimuth = null;
 
     public void onCreate(Bundle savedInstanceState) {
         results = new HashMap<>();
@@ -43,7 +43,7 @@ public class Measures extends AppCompatActivity {
         //XML View
         setContentView(R.layout.activity_measures);
 
-        addContentView(new Plot(this), new ViewGroup.LayoutParams(1000,1000));
+        /*addContentView(new Plot(this), new ViewGroup.LayoutParams(1000,1000));*/
 
         textX = (TextView) findViewById(R.id.textX);
         textY = (TextView) findViewById(R.id.textY);
@@ -78,10 +78,11 @@ public class Measures extends AppCompatActivity {
         sensorManager.unregisterListener(sensorListener);
     }
 
-    public double getPitch(){
+    
+    public Double getPitch(){
         return pitch;
     }
-    public double getRoll(){
+    public Double getRoll(){
         return roll;
     }
 
@@ -125,7 +126,7 @@ public class Measures extends AppCompatActivity {
     };
 
     //Class to Draw data on screen
-    private class Plot extends View{
+/*    private class Plot extends View{
         float x = 0;
         float y = 0;
         Path path = new Path();
@@ -139,23 +140,27 @@ public class Measures extends AppCompatActivity {
             paint.setColor(Color.BLACK);
             paint.setStrokeWidth(6);
             //path.moveTo(800,800);
-            x = (float)getPitch()*10+200;
-            y = (float)getRoll()*10+200;
+            x = getPitch()*10+200;
+            y = getRoll()*10+200;
             //path.lineTo(x,y);
             canvas.drawCircle(500,500,200,paint);
             canvas.drawPoint(x,y,paint);
         }
-    }
+    }*/
 
     private class AsyncGet extends AsyncTask<Void, Double, Boolean>{
         @Override
         protected Boolean doInBackground(Void... params) {
-            try {
-                sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            for(int i=0; i<100000; i++){
+
+            while (getPitch()==null || getRoll()==null){}
+
+            for(int i=0; i<1000; i++){
+                //get samples at 20HZ
+                try {
+                    sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 publishProgress(getPitch(),getRoll());
 

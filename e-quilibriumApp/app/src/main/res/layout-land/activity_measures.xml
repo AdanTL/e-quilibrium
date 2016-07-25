@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,38 +8,53 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.app.sirdreadlocks.e_quilibrium.MainActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:columnCount="4"
+    android:rowCount="1">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/x"
-        android:id="@+id/textX"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/y"
-        android:id="@+id/textY"
-        android:layout_gravity="center_vertical" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/z"
-        android:id="@+id/textZ"
-        android:layout_weight="0.05"
-        android:layout_gravity="bottom" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@android:string/ok"
         android:id="@+id/buttonOk"
-        android:layout_gravity="center_vertical" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/x"
+        android:id="@+id/textX"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/y"
+        android:id="@+id/textY"
+        android:layout_below="@+id/textX"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/z"
+        android:id="@+id/textZ"
+        android:layout_below="@+id/textY"
+        android:layout_centerHorizontal="true"
+        />
+
+    <com.app.sirdreadlocks.e_quilibrium.CanvasView
+        android:layout_height="300dp"
+        android:layout_width="300dp"
+        android:id="@+id/canvasView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
-
-
-</LinearLayout>
+</RelativeLayout>

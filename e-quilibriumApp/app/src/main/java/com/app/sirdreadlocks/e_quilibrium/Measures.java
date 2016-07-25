@@ -46,12 +46,10 @@ public class Measures extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         //XML View
-        /*setContentView(R.layout.activity_measures);*/
-        mCanvasView = new CanvasView(this);
+        setContentView(R.layout.activity_measures);
+        mCanvasView = (CanvasView) findViewById(R.id.canvasView);
 
-        setContentView(mCanvasView);
-
-      /*  textX = (TextView) findViewById(R.id.textX);
+        textX = (TextView) findViewById(R.id.textX);
         textY = (TextView) findViewById(R.id.textY);
         textZ = (TextView) findViewById(R.id.textZ);
 
@@ -68,7 +66,7 @@ public class Measures extends AppCompatActivity {
 
                 startActivity(intent);
             }
-        });*/
+        });
     }
 
     public void onResume() {
@@ -114,38 +112,15 @@ public class Measures extends AppCompatActivity {
                     pitch = Math.toDegrees(orientation[1]);
                     roll = Math.toDegrees(orientation[2]);
 
-/*                    //Show all data but only need pitch(rotation in X axis) and roll (rotation in Y)
+                    //Show all data but only need pitch(rotation in X axis) and roll (rotation in Y)
                     textX.setText("A : " + azimuth + " º");//useless for our purpose
                     textY.setText("P : " + pitch + " º");//pitch goes from -90 to 90
-                    textZ.setText("R : " + roll + " º");//roll goes from -90 to 90*/
+                    textZ.setText("R : " + roll + " º");//roll goes from -90 to 90
 
                 }
             }
         }
     };
-
-    //Class to Draw data on screen
-    private class CanvasView extends View{
-        private ShapeDrawable mShape;
-        int x = 10;
-        int y = 10;
-        int width = 300;
-        int height = 50;
-        public CanvasView(Context context) {
-
-            super(context);
-
-            mShape = new ShapeDrawable(new OvalShape());
-            mShape.getPaint().setColor(0xff74AC23);
-            mShape.setBounds(x, y, x + width, y + height);
-        }
-
-        public void onDraw(Canvas canvas){
-            x +=10;
-            mShape.setBounds(x, y, x + width, y + height);
-            mShape.draw(canvas);
-        }
-    }
 
     private class AsyncGet extends AsyncTask<Void, Double, Boolean>{
         @Override

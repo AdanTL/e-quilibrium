@@ -7,39 +7,39 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.app.sirdreadlocks.e_quilibrium.MainActivity">
+    tools:context="com.app.sirdreadlocks.e_quilibrium.MainActivity"
+    android:weightSum="1">
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/x"
-        android:id="@+id/textX" />
+        android:id="@+id/textX"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/y"
-        android:id="@+id/textY" />
+        android:id="@+id/textY"
+        android:layout_gravity="center_vertical" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/z"
-        android:id="@+id/textZ" />
+        android:id="@+id/textZ"
+        android:layout_weight="0.05"
+        android:layout_gravity="bottom" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@android:string/ok"
         android:id="@+id/buttonOk"
-        android:layout_marginTop="72dp" />
+        android:layout_gravity="center_vertical" />
 
-    <view
-        class="com.app.sirdreadlocks.e_quilibrium.Measures$CanvasView"
-        android:id="@+id/plot_canvas"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:textColor="#FFFFFF" />
+
 
 
 </LinearLayout>

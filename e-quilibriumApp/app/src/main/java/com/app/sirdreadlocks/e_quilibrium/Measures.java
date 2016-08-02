@@ -60,6 +60,8 @@ public class Measures extends AppCompatActivity {
         btnOk.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
 
+                asyncTask.cancel(true);
+
                 Intent intent =
                         new Intent(Measures.this, Results.class);
                 intent.putExtra("RESULTS",results);

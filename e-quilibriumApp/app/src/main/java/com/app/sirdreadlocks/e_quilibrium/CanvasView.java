@@ -2,6 +2,8 @@ package com.app.sirdreadlocks.e_quilibrium;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.util.AttributeSet;
@@ -11,21 +13,23 @@ import android.view.View;
  * Created by adan on 7/25/16.
  */
 public class CanvasView extends View {
-    private ShapeDrawable mShape;
-    int x = 10;
-    int y = 10;
-    int width = 300;
-    int height = 50;
+    final float c_x = getWidth() * 1.5f;
+    final float c_y = getHeight() * 1.5f;
+    Paint circles = new Paint();
+
     public CanvasView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mShape = new ShapeDrawable(new OvalShape());
-        mShape.getPaint().setColor(0xff74AC23);
-        mShape.setBounds(x, y, x + width, y + height);
+        circles.setAntiAlias(true);
+        circles.setColor(Color.BLACK);
+        circles.setStyle(Paint.Style.STROKE);
+        circles.setStrokeWidth(2f);
     }
 
-    public void onDraw(Canvas canvas){
-        x +=10;
-        mShape.setBounds(x, y, x + width, y + height);
-        mShape.draw(canvas);
+    public void onDraw(Canvas canvas) {
+
+        for(int i = 1; i <= 110; i += 10)
+            canvas.drawCircle(c_x, c_y, i, circles);
+
+
     }
 }

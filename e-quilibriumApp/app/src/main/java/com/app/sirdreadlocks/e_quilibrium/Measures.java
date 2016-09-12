@@ -150,7 +150,7 @@ public class Measures extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Double... values) {
             results.put(String.valueOf(System.currentTimeMillis()), values);
-            mCanvasView.invalidate();
+            mCanvasView.setPoint(values[0].floatValue(),values[1].floatValue());
         }
 
         @Override

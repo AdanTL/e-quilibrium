@@ -51,7 +51,6 @@ public class Measures extends AppCompatActivity {
 
         textX = (TextView) findViewById(R.id.textX);
         textY = (TextView) findViewById(R.id.textY);
-        textZ = (TextView) findViewById(R.id.textZ);
 
         btnOk = (Button) findViewById(R.id.buttonOk);
 
@@ -110,13 +109,13 @@ public class Measures extends AppCompatActivity {
                     SensorManager.getOrientation(R, orientation);
 
                     //Conversion of Math.toDegrees is not so exact as I would like
-                    azimuth = Math.toDegrees(orientation[0]);
-                    pitch = Math.toDegrees(orientation[1]);
+                    //Pitch is negative to fit with horizontal orientation
+                    pitch = - Math.toDegrees(orientation[1]);
                     roll = Math.toDegrees(orientation[2]);
 
                     //Show all data but only need pitch(rotation in X axis) and roll (rotation in Y)
-                    textY.setText("X : " + pitch + " º");//pitch goes from -90 to 90
-                    textZ.setText("Y : " + roll + " º");//roll goes from -90 to 90
+                    textX.setText("X : " + pitch + " º");//pitch goes from -90 to 90
+                    textY.setText("Y : " + roll + " º");//roll goes from -90 to 90
 
                 }
             }

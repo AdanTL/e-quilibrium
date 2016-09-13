@@ -39,15 +39,6 @@
         android:layout_centerHorizontal="true"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/z"
-        android:id="@+id/textZ"
-        android:layout_below="@+id/textY"
-        android:layout_centerHorizontal="true"
-        />
-
     <com.app.sirdreadlocks.e_quilibrium.CanvasView
         android:layout_height="300dp"
         android:layout_width="300dp"

@@ -34,9 +34,6 @@ public class CanvasView extends View {
 
         mPath = new Path();
 
-        mPath.moveTo(c_x,c_y);
-
-
     }
 
     public CanvasView(Context context, AttributeSet attrs) {
@@ -64,7 +61,7 @@ public class CanvasView extends View {
         ini_y = end_y;
         end_x = x;
         end_y = y;
-        mPath.lineTo(c_x + x*10,c_y + y*10);
+        mPath.lineTo(c_x + x*10,c_y - y*10);
         invalidate();
         requestLayout();
     }
@@ -79,6 +76,7 @@ public class CanvasView extends View {
         maxRadius = Math.min(usableWidth, usableHeight) / 2;
         c_x = getPaddingLeft() + (usableWidth / 2);
         c_y = getPaddingTop() + (usableHeight / 2);
+        mPath.moveTo(c_x,c_y);
     }
 
 }

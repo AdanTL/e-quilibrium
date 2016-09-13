@@ -115,9 +115,8 @@ public class Measures extends AppCompatActivity {
                     roll = Math.toDegrees(orientation[2]);
 
                     //Show all data but only need pitch(rotation in X axis) and roll (rotation in Y)
-                    textX.setText("A : " + azimuth + " º");//useless for our purpose
-                    textY.setText("P : " + pitch + " º");//pitch goes from -90 to 90
-                    textZ.setText("R : " + roll + " º");//roll goes from -90 to 90
+                    textY.setText("X : " + pitch + " º");//pitch goes from -90 to 90
+                    textZ.setText("Y : " + roll + " º");//roll goes from -90 to 90
 
                 }
             }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.util.AttributeSet;
@@ -13,26 +14,30 @@ import android.view.View;
  * Created by adan on 7/25/16.
  */
 public class CanvasView extends View {
-    final float c_x = getWidth() * 1.5f;
-    final float c_y = getHeight() * 1.5f;
+    private float c_x = 0;
+    private float c_y = 0;
+    private float maxRadius = 0;
     private float ini_x = 0.0f;
     private float ini_y = 0.0f;
     private float end_x = 0.0f;
     private float end_y = 0.0f;
-    private Paint circles;
+    private Path mPath;
+    private Paint radar;
+    private Boolean first = true;
 
     private void init(){
-        circles = new Paint();
-        circles.setAntiAlias(true);
-        circles.setColor(Color.BLACK);
-        circles.setStyle(Paint.Style.STROKE);
-        circles.setStrokeWidth(2f);
-    }
+        radar = new Paint();
+        radar.setAntiAlias(true);
+        radar.setColor(Color.BLACK);
+        radar.setStyle(Paint.Style.STROKE);
+        radar.setStrokeWidth(2f);
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    }
+        mPath = new Path();
 
+        mPath.moveTo(c_x,c_y);
+
+
+    }
 
     public CanvasView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -41,11 +46,17 @@ public class CanvasView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        //Radar circles
+        for(int i = 1; i <= maxRadius; i += maxRadius/4)
+            canvas.drawCircle(c_x, c_y, i, radar);
 
-        for(int i = 1; i <= 110; i += 10)
-            canvas.drawCircle(c_x, c_y, i, circles);
+        //Radar lines
+        canvas.drawLine(c_x - maxRadius,c_y,c_x + maxRadius ,c_y,radar);
+        canvas.drawLine(c_x, c_y - maxRadius, c_x, c_y + maxRadius, radar);
 
-
+        //Movement lines
+        canvas.drawPath(mPath,radar);
     }
 
     public void setPoint(float x, float y){
@@ -53,7 +64,21 @@ public class CanvasView extends View {
         ini_y = end_y;
         end_x = x;
         end_y = y;
+        mPath.lineTo(c_x + x*10,c_y + y*10);
         invalidate();
         requestLayout();
     }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        float usableWidth = (float) w - (float) (getPaddingLeft() + getPaddingRight());
+        float usableHeight = (float) h - (float) (getPaddingTop() + getPaddingBottom());
+
+        maxRadius = Math.min(usableWidth, usableHeight) / 2;
+        c_x = getPaddingLeft() + (usableWidth / 2);
+        c_y = getPaddingTop() + (usableHeight / 2);
+    }
+
 }

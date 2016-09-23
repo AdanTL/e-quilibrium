@@ -1,5 +1,6 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
+import android.graphics.Canvas;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -22,7 +23,7 @@ public class Results extends AppCompatActivity {
     private Map<String, Double[]> results;
     private Map<String, Double[]> resultsSorted;
     private String strResults = "";
-    private XYPlot plot;
+    private CanvasView plot;
 
 
     public void onCreate(Bundle savedInstanceState)
@@ -33,50 +34,39 @@ public class Results extends AppCompatActivity {
         // get Map from Intent
         results = (HashMap<String, Double[]>)this.getIntent().getSerializableExtra("RESULTS");
 
-        // initialize our XYPlot reference:
-        plot = (XYPlot) findViewById(R.id.plot);
-
-        SimpleXYSeries series = new SimpleXYSeries("Series");
-
-        // set domain and range
-        plot.setDomainBoundaries(-50, 50, BoundaryMode.FIXED);
-        plot.setRangeBoundaries(-50, 50, BoundaryMode.FIXED);
-
-        //fill series
-        for (Map.Entry<String, Double[]> e: results.entrySet()) {
-            Double resValues[] = e.getValue();
-            Double x = resValues[0];
-            Double y = resValues[1];
-            series.addLast(x,y);
-        }
-
-        // create formatters to use for drawing a series using LineAndPointRenderer
-        // and configure them from xml:
-        LineAndPointFormatter seriesFormat = new LineAndPointFormatter();
-        seriesFormat.configure(getApplicationContext(),
-                R.xml.point_formatter);
-
-
-        // add each series to the xyplot:
-        plot.addSeries(series, seriesFormat);
-
-        // reduce the number of range labels
-        plot.setTicksPerRangeLabel(3);
-
-        // rotate domain labels 45 degrees to make them more compact horizontally:
-        plot.getGraphWidget().setDomainLabelOrientation(-45);
-
-
-        results = (HashMap<String, Double[]>)this.getIntent().getSerializableExtra("RESULTS");
+        // sort Map
         resultsSorted = new TreeMap<>(results);
 
+        // initialize our plot reference:
+        plot = (CanvasView) findViewById(R.id.plot);
+
+        // fill plot
         for (Map.Entry<String, Double[]> e: resultsSorted.entrySet()) {
-            strResults += "["+e.getKey() + "=>\t:" + e.getValue()[0] +", " + e.getValue()[1] + "\n";
+
+            strResults += e.getKey() + "=>\t:" + e.getValue()[0] +", " + e.getValue()[1] + "\n";
+
+            Double resValues[] = e.getValue();
+            float x = resValues[0].floatValue();
+            float y = resValues[1].floatValue();
+            plot.setPoint(x,y);
         }
+
         txtResults = (TextView) findViewById(R.id.txtResults);
         txtResults.setMovementMethod(new ScrollingMovementMethod());
         txtResults.setText(strResults);
 
     }
 
+/*    @Override
+    protected void onResume() {
+        super.onResume();
+        // fill plot
+        for (Map.Entry<String, Double[]> e: resultsSorted.entrySet()) {
+
+            Double resValues[] = e.getValue();
+            float x = resValues[0].floatValue();
+            float y = resValues[1].floatValue();
+            plot.setPoint(x,y);
+        }
+    }*/
 }

@@ -7,14 +7,10 @@
     android:orientation="vertical"
     android:nestedScrollingEnabled="false">
 
-    <com.androidplot.xy.XYPlot
-        style="@style/APDefacto.Light"
+    <com.app.sirdreadlocks.e_quilibrium.CanvasView
         android:id="@+id/plot"
-        android:layout_width="wrap_content"
-        android:layout_height="255dp"
-        ap:label="Results"
-        ap:rangeLabel="Roll"
-        ap:domainLabel="Pitch" />
+        android:layout_width="300dp"
+        android:layout_height="300dp"/>
 
     <TextView
         android:layout_width="wrap_content"

@@ -17,13 +17,8 @@ public class CanvasView extends View {
     private float c_x = 0;
     private float c_y = 0;
     private float maxRadius = 0;
-    private float ini_x = 0.0f;
-    private float ini_y = 0.0f;
-    private float end_x = 0.0f;
-    private float end_y = 0.0f;
     private Path mPath;
     private Paint radar;
-    private Boolean first = true;
 
     private void init(){
         radar = new Paint();
@@ -45,7 +40,7 @@ public class CanvasView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //Radar circles
-        for(int i = 1; i <= maxRadius; i += maxRadius/4)
+        for(int i = 1; i < maxRadius; i += maxRadius/4)
             canvas.drawCircle(c_x, c_y, i, radar);
 
         //Radar lines
@@ -57,10 +52,6 @@ public class CanvasView extends View {
     }
 
     public void setPoint(float x, float y){
-        ini_x = end_x;
-        ini_y = end_y;
-        end_x = x;
-        end_y = y;
         mPath.lineTo(c_x + x*10,c_y - y*10);
         invalidate();
         requestLayout();

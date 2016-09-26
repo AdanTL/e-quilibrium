@@ -1,13 +1,6 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -16,14 +9,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static java.lang.Thread.sleep;
@@ -32,9 +22,9 @@ public class Measures extends AppCompatActivity {
     private TextView textX, textY, textZ;
     private SensorManager sensorManager;
     private Sensor accelerometer, magnetometer;
-    private Button btnOk;
+    private Button btnStart, btnEnd;
     private HashMap<String, Double[]> results;
-    private AsyncGet asyncTask;
+    private AsyncTest asyncTask;
     private Double pitch = null, roll = null, azimuth = null;
     private CanvasView mCanvasView;
 
@@ -52,11 +42,10 @@ public class Measures extends AppCompatActivity {
         textX = (TextView) findViewById(R.id.textX);
         textY = (TextView) findViewById(R.id.textY);
 
-        btnOk = (Button) findViewById(R.id.buttonOk);
+        btnStart = (Button) findViewById(R.id.btnStart);
+        btnEnd = (Button) findViewById(R.id.btnEnd);
 
-
-
-        btnOk.setOnClickListener(new View.OnClickListener(){
+        btnEnd.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
 
                 asyncTask.cancel(true);
@@ -74,8 +63,15 @@ public class Measures extends AppCompatActivity {
         super.onResume();
         sensorManager.registerListener(sensorListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(sensorListener, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
-        asyncTask = new AsyncGet();
-        asyncTask.execute();
+        asyncTask = new AsyncTest();
+
+        btnStart.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                asyncTask.execute();
+            }
+        });
+
+
     }
 
     public void onStop() {
@@ -114,21 +110,22 @@ public class Measures extends AppCompatActivity {
                     roll = Math.toDegrees(orientation[2]);
 
                     //Show all data but only need pitch(rotation in X axis) and roll (rotation in Y)
-                    textX.setText("X : " + pitch + " º");//pitch goes from -90 to 90
-                    textY.setText("Y : " + roll + " º");//roll goes from -90 to 90
+                    textX.setText("X : " + pitch.floatValue() + " º");//pitch goes from -90 to 90
+                    textY.setText("Y : " + roll.floatValue() + " º");//roll goes from -90 to 90
 
                 }
             }
         }
     };
 
-    private class AsyncGet extends AsyncTask<Void, Double, Boolean>{
+    private class AsyncTest extends AsyncTask<Void, Double, Boolean>{
         @Override
         protected Boolean doInBackground(Void... params) {
 
+            //Empty while to wait sensors' set up
             while (getPitch()==null || getRoll()==null){}
 
-            for(int i=0; i<1000; i++){
+            for(int i=0; i<400; i++){
                 //get samples at 20HZ
                 try {
                     sleep(50);
@@ -154,7 +151,52 @@ public class Measures extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             if(result)
-                Toast.makeText(Measures.this, "Done!",
+                Toast.makeText(Measures.this, "Test done!",
+                        Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected void onCancelled() {
+            Toast.makeText(Measures.this, "Canceled!",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private class AsyncCalib extends AsyncTask<Void, Double, Boolean>{
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            //Empty while to wait sensors' set up
+            while (getPitch()==null || getRoll()==null){}
+
+            for(int i=0; i<60; i++){
+                //get samples at 20HZ
+                try {
+                    sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                publishProgress(getPitch(),getRoll());
+
+                if(isCancelled())
+                    break;
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onProgressUpdate(Double... values) {
+            results.put(String.valueOf(System.currentTimeMillis()), values);
+            mCanvasView.setPoint(values[0].floatValue(),values[1].floatValue());
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if(result)
+                Toast.makeText(Measures.this, "Test done!",
                         Toast.LENGTH_SHORT).show();
         }
 

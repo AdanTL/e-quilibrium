@@ -12,23 +12,30 @@
     android:columnCount="4"
     android:rowCount="1">
 
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@android:string/ok"
-        android:id="@+id/buttonOk"
+        android:text="End"
+        android:id="@+id/btnEnd"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="Start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnEnd"
+        android:layout_alignLeft="@+id/btnEnd"
+        android:layout_alignStart="@+id/btnEnd"
+        android:id="@+id/btnStart" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/x"
         android:id="@+id/textX"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_centerInParent="true"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,13 +44,21 @@
         android:id="@+id/textY"
         android:layout_below="@+id/textX"
         android:layout_centerHorizontal="true"
-        />
+        android:layout_centerInParent="true"/>
 
     <com.app.sirdreadlocks.e_quilibrium.CanvasView
         android:layout_height="300dp"
         android:layout_width="300dp"
         android:id="@+id/canvasView"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"/>
 
+    <Button
+        android:text="GetCOP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnStart"
+        android:layout_alignLeft="@+id/btnStart"
+        android:layout_alignStart="@+id/btnStart"
+        android:id="@+id/btnCOP" />
 
 </RelativeLayout>

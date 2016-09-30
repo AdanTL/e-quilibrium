@@ -54,7 +54,8 @@ public class CanvasView extends View {
     }
 
     public void setPoint(float x, float y){
-        mPath.lineTo(c_x + x*10,c_y - y*10);
+        //Map coordinate 20 degrees as end of Zone D of radar.
+        mPath.lineTo(c_x + x*(maxRadius/20),c_y - y*(maxRadius/20));
         invalidate();
         requestLayout();
     }

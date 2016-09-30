@@ -1,6 +1,7 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -14,19 +15,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileOutputStream;
 import java.util.HashMap;
 
 import static java.lang.Thread.sleep;
 
 public class Measures extends AppCompatActivity {
-    private TextView textX, textY, textZ;
+    private TextView textX, textY;
     private SensorManager sensorManager;
     private Sensor accelerometer, magnetometer;
     private Button btnStart, btnEnd;
     private HashMap<String, Double[]> results;
     private AsyncTest asyncTask;
-    private Double pitch = null, roll = null, azimuth = null;
+    private Double pitch = null, roll = null;
     private CanvasView mCanvasView;
+    private Bitmap bmp;
 
     public void onCreate(Bundle savedInstanceState) {
         results = new HashMap<>();
@@ -53,6 +56,23 @@ public class Measures extends AppCompatActivity {
                 Intent intent =
                         new Intent(Measures.this, Results.class);
                 intent.putExtra("RESULTS",results);
+
+                try {
+                    //Write file
+                    mCanvasView.setDrawingCacheEnabled(true);
+                    bmp = mCanvasView.getDrawingCache();
+                    String filename = "bitmap.png";
+                    FileOutputStream stream = openFileOutput(filename, Context.MODE_PRIVATE);
+                    bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+                    //Cleanup
+                    stream.close();
+                    bmp.recycle();
+
+                    intent.putExtra("IMAGE", filename);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 startActivity(intent);
             }

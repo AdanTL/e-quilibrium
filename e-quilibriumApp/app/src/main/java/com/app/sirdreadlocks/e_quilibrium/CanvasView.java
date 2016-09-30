@@ -1,6 +1,7 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -39,6 +40,7 @@ public class CanvasView extends View {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
         //Radar circles
         for(int i = 1; i < maxRadius; i += maxRadius/4)
             canvas.drawCircle(c_x, c_y, i, radar);

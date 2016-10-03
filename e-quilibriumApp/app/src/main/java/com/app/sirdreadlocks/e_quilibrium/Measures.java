@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.Thread.sleep;
 
@@ -26,10 +27,11 @@ public class Measures extends AppCompatActivity {
     private TextView textX, textY;
     private SensorManager sensorManager;
     private Sensor accelerometer, magnetometer;
-    private Button btnStart, btnEnd;
-    private HashMap<String, Double[]> results;
-    private AsyncTest asyncTask;
-    private Double pitch = null, roll = null;
+    private Button btnCOB, btnStart, btnEnd;
+    private HashMap<String, Double[]> results, calib;
+    private AsyncTest asyncTest;
+    private AsyncCalib asyncCalib;
+    private Double pitch = null, roll = null, cob_x = 0.0, cob_y = 0.0;
     private CanvasView mCanvasView;
     private Bitmap bmp;
 
@@ -48,13 +50,14 @@ public class Measures extends AppCompatActivity {
         textX = (TextView) findViewById(R.id.textX);
         textY = (TextView) findViewById(R.id.textY);
 
+        btnCOB = (Button) findViewById(R.id.btnCOB);
         btnStart = (Button) findViewById(R.id.btnStart);
         btnEnd = (Button) findViewById(R.id.btnEnd);
 
         btnEnd.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
 
-                asyncTask.cancel(true);
+                asyncTest.cancel(true);
 
                 Intent intent =
                         new Intent(Measures.this, Results.class);
@@ -86,13 +89,23 @@ public class Measures extends AppCompatActivity {
         super.onResume();
         sensorManager.registerListener(sensorListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(sensorListener, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
-        asyncTask = new AsyncTest();
 
         btnStart.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                asyncTask.execute();
+                asyncTest = new AsyncTest();
+                asyncTest.execute();
             }
         });
+
+        btnCOB.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                calib = new HashMap<>();
+                asyncCalib = new AsyncCalib();
+                asyncCalib.execute();
+            }
+        });
+
+
 
 
     }
@@ -104,10 +117,10 @@ public class Measures extends AppCompatActivity {
 
     
     public Double getPitch(){
-        return pitch;
+        return pitch - cob_x;
     }
     public Double getRoll(){
-        return roll;
+        return roll - cob_y;
     }
 
     public SensorEventListener sensorListener = new SensorEventListener() {
@@ -161,7 +174,6 @@ public class Measures extends AppCompatActivity {
                 if(isCancelled())
                     break;
             }
-
             return true;
         }
 
@@ -212,15 +224,17 @@ public class Measures extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Double... values) {
-            results.put(String.valueOf(System.currentTimeMillis()), values);
+            calib.put(String.valueOf(System.currentTimeMillis()), values);
             mCanvasView.setPoint(values[0].floatValue(),values[1].floatValue());
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
-            if(result)
-                Toast.makeText(Measures.this, "Test done!",
+            if(result) {
+                Toast.makeText(Measures.this, "Calibration done!",
                         Toast.LENGTH_SHORT).show();
+                calculateCOB();
+            }
         }
 
         @Override
@@ -229,6 +243,16 @@ public class Measures extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void calculateCOB(){
+        Double sumX=0.0, sumY=0.0;
+        for (HashMap.Entry<String, Double[]> e : calib.entrySet()) {
+            sumX += e.getValue()[0];
+            sumY += e.getValue()[1];
+        }
+        cob_x += sumX / (float)(calib.size());
+        cob_y += sumY / (float)(calib.size());
     }
 
 }

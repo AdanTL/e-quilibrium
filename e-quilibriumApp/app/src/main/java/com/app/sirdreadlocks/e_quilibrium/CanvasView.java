@@ -21,7 +21,7 @@ public class CanvasView extends View {
     private Path mPath;
     private Paint radar;
 
-    private void init(){
+    private void init() {
         radar = new Paint();
         radar.setAntiAlias(true);
         radar.setColor(Color.BLACK);
@@ -42,20 +42,20 @@ public class CanvasView extends View {
         super.onDraw(canvas);
 
         //Radar circles
-        for(int i = 1; i < maxRadius; i += maxRadius/4)
+        for (int i = 1; i < maxRadius; i += maxRadius / 4)
             canvas.drawCircle(c_x, c_y, i, radar);
 
         //Radar lines
-        canvas.drawLine(c_x - maxRadius,c_y,c_x + maxRadius ,c_y,radar);
+        canvas.drawLine(c_x - maxRadius, c_y, c_x + maxRadius, c_y, radar);
         canvas.drawLine(c_x, c_y - maxRadius, c_x, c_y + maxRadius, radar);
 
         //Movement lines
-        canvas.drawPath(mPath,radar);
+        canvas.drawPath(mPath, radar);
     }
 
-    public void setPoint(float x, float y){
+    public void setPoint(float x, float y) {
         //Map coordinate 20 degrees as end of Zone D of radar.
-        mPath.lineTo(c_x + x*(maxRadius/20),c_y - y*(maxRadius/20));
+        mPath.lineTo(c_x + x * (maxRadius / 20), c_y - y * (maxRadius / 20));
         invalidate();
         requestLayout();
     }
@@ -70,7 +70,6 @@ public class CanvasView extends View {
         maxRadius = Math.min(usableWidth, usableHeight) / 2;
         c_x = getPaddingLeft() + (usableWidth / 2);
         c_y = getPaddingTop() + (usableHeight / 2);
-        mPath.moveTo(c_x,c_y);
+        mPath.moveTo(c_x, c_y);
     }
-
 }

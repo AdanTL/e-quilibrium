@@ -3,4 +3,7 @@
     <string name="x">X</string>
     <string name="y">Y</string>
     <string name="title_activity_patient">Patient info</string>
+    <string name="end">End</string>
+    <string name="getcob">GetCOB</string>
+    <string name="start">Start</string>
 </resources>

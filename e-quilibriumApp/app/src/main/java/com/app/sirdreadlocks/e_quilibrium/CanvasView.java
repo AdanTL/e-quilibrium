@@ -19,7 +19,8 @@ public class CanvasView extends View {
     private float c_y = 0;
     private float maxRadius = 0;
     private Path mPath;
-    private Paint radar;
+    private Paint radar, line;
+    private boolean firstPoint;
 
     private void init() {
         radar = new Paint();
@@ -27,6 +28,12 @@ public class CanvasView extends View {
         radar.setColor(Color.BLACK);
         radar.setStyle(Paint.Style.STROKE);
         radar.setStrokeWidth(2f);
+
+        line = new Paint();
+        line.setAntiAlias(true);
+        line.setColor(Color.GREEN);
+        line.setStyle(Paint.Style.STROKE);
+        line.setStrokeWidth(4f);
 
         mPath = new Path();
 
@@ -50,14 +57,23 @@ public class CanvasView extends View {
         canvas.drawLine(c_x, c_y - maxRadius, c_x, c_y + maxRadius, radar);
 
         //Movement lines
-        canvas.drawPath(mPath, radar);
+        canvas.drawPath(mPath, line);
     }
 
     public void setPoint(float x, float y) {
+        if (firstPoint) {
+            mPath.moveTo(c_x + x * (maxRadius / 20), c_y - y * (maxRadius / 20));
+            firstPoint = false;
+        }
         //Map coordinate 20 degrees as end of Zone D of radar.
         mPath.lineTo(c_x + x * (maxRadius / 20), c_y - y * (maxRadius / 20));
         invalidate();
         requestLayout();
+    }
+
+    public void cleanRadar(){
+        mPath.reset();
+        firstPoint = true;
     }
 
     @Override
@@ -70,6 +86,5 @@ public class CanvasView extends View {
         maxRadius = Math.min(usableWidth, usableHeight) / 2;
         c_x = getPaddingLeft() + (usableWidth / 2);
         c_y = getPaddingTop() + (usableHeight / 2);
-        mPath.moveTo(c_x, c_y);
     }
 }

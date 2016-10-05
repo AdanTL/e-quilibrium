@@ -92,6 +92,7 @@ public class Measures extends AppCompatActivity {
 
         btnStart.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+                mCanvasView.cleanRadar();
                 asyncTest = new AsyncTest();
                 asyncTest.execute();
             }
@@ -99,6 +100,7 @@ public class Measures extends AppCompatActivity {
 
         btnCOB.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+                mCanvasView.cleanRadar();
                 calib = new HashMap<>();
                 asyncCalib = new AsyncCalib();
                 asyncCalib.execute();

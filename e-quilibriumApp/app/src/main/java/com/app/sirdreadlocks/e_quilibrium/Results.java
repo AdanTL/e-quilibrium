@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Results extends AppCompatActivity {
-    private TextView txtResults;
     private ImageView imageView;
     private Map<String, Double[]> results;
     private Map<String, Double[]> resultsSorted;
@@ -40,11 +39,7 @@ public class Results extends AppCompatActivity {
         // sort Map
         resultsSorted = new TreeMap<>(results);
 
-        // fill plot
-        for (Map.Entry<String, Double[]> e : resultsSorted.entrySet())
-            strResults += e.getKey() + "=>\t:" + e.getValue()[0] + ", " + e.getValue()[1] + "\n";
-
-        imageView = (ImageView) findViewById(R.id.imageView);
+        //imageView = (ImageView) findViewById(R.id.imageView);
 
         Bitmap bmp;
         String filename = getIntent().getStringExtra("IMAGE");
@@ -56,10 +51,5 @@ public class Results extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        txtResults = (TextView) findViewById(R.id.txtResults);
-        txtResults.setMovementMethod(new ScrollingMovementMethod());
-        txtResults.setText(strResults);
-
     }
 }

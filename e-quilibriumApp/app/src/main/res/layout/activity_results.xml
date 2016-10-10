@@ -118,7 +118,7 @@
         android:layout_width="0dp"
         android:layout_height="100dp"
         ap:srcCompat="@color/ap_transparent"
-        android:id="@+id/imageView"
+        android:id="@+id/imgRadar"
         android:layout_marginStart="16dp"
         ap:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="16dp"

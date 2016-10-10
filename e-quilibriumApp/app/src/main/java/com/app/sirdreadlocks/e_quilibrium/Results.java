@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Results extends AppCompatActivity {
-    private ImageView imageView;
+    private ImageView imgRadar;
     private Map<String, Double[]> results;
     private Map<String, Double[]> resultsSorted;
     private String strResults = "";
@@ -39,14 +39,14 @@ public class Results extends AppCompatActivity {
         // sort Map
         resultsSorted = new TreeMap<>(results);
 
-        //imageView = (ImageView) findViewById(R.id.imageView);
+        imgRadar = (ImageView) findViewById(R.id.imgRadar);
 
         Bitmap bmp;
         String filename = getIntent().getStringExtra("IMAGE");
         try {
             FileInputStream is = this.openFileInput(filename);
             bmp = BitmapFactory.decodeStream(is);
-            imageView.setImageBitmap(bmp);
+            imgRadar.setImageBitmap(bmp);
             is.close();
         } catch (Exception e) {
             e.printStackTrace();

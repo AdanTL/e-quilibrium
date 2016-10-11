@@ -25,6 +25,7 @@ import java.util.TreeMap;
 
 public class Results extends AppCompatActivity {
     private ImageView imgRadar;
+    private TextView txtOSI_AS, txtOSI_SD, txtAPI_AS, txtAPI_SD, txtMLI_AS, txtMLI_SD, txtTZ_A, txtTZ_B, txtTZ_C, txtTZ_D, txtTQ_I, txtTQ_II, txtTQ_III, txtTQ_IV;
     private Map<String, Double[]> results;
     private Map<String, Double[]> resultsSorted;
     private String strResults = "";
@@ -39,7 +40,22 @@ public class Results extends AppCompatActivity {
         // sort Map
         resultsSorted = new TreeMap<>(results);
 
+        // layout references
         imgRadar = (ImageView) findViewById(R.id.imgRadar);
+        txtOSI_AS = (TextView) findViewById(R.id.txtOSI_AS);
+        txtOSI_SD = (TextView) findViewById(R.id.txtOSI_SD);
+        txtAPI_AS = (TextView) findViewById(R.id.txtAPI_AS);
+        txtAPI_SD = (TextView) findViewById(R.id.txtAPI_SD);
+        txtMLI_AS = (TextView) findViewById(R.id.txtMLI_AS);
+        txtMLI_SD = (TextView) findViewById(R.id.txtMLI_SD);
+        txtTZ_A = (TextView) findViewById(R.id.txtTZ_A);
+        txtTZ_B = (TextView) findViewById(R.id.txtTZ_B);
+        txtTZ_C = (TextView) findViewById(R.id.txtTZ_C);
+        txtTZ_D = (TextView) findViewById(R.id.txtTZ_D);
+        txtTQ_I = (TextView) findViewById(R.id.txtTQ_I);
+        txtTQ_II = (TextView) findViewById(R.id.txtTQ_II);
+        txtTQ_III = (TextView) findViewById(R.id.txtTQ_III);
+        txtTQ_IV = (TextView) findViewById(R.id.txtTQ_IV);
 
         Bitmap bmp;
         String filename = getIntent().getStringExtra("IMAGE");

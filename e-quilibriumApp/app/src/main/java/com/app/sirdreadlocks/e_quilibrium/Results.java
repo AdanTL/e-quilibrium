@@ -57,6 +57,13 @@ public class Results extends AppCompatActivity {
         txtTQ_III = (TextView) findViewById(R.id.txtTQ_III);
         txtTQ_IV = (TextView) findViewById(R.id.txtTQ_IV);
 
+        // txt setters
+        txtOSI_AS.setText(""+getOSI_AS()+"");
+        txtAPI_AS.setText(""+getAPI_AS()+"");
+        txtMLI_AS.setText(""+getMLI_AS()+"");
+
+        getZonesPer();
+
         Bitmap bmp;
         String filename = getIntent().getStringExtra("IMAGE");
         try {
@@ -67,5 +74,36 @@ public class Results extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private float getOSI_AS(){
+        float sumX = 0;
+        float sumY = 0;
+        for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
+            sumX += Math.pow(0-e.getValue()[0],2);
+            sumY += Math.pow(e.getValue()[1],2);
+        }
+        return (float)Math.sqrt(sumX+sumY/resultsSorted.size());
+    }
+
+    private float getAPI_AS(){
+        float sumY = 0;
+        for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
+            sumY += Math.pow(e.getValue()[1],2);
+        }
+        return (float)Math.sqrt(sumY/resultsSorted.size());
+    }
+
+    private float getMLI_AS(){
+        float sumX = 0;
+        for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
+            sumX += Math.pow(0-e.getValue()[0],2);
+        }
+        return (float)Math.sqrt(sumX/resultsSorted.size());
+    }
+
+    private void getZonesPer(){
+        float A, B, C, D;
+
     }
 }

@@ -63,6 +63,7 @@ public class Results extends AppCompatActivity {
         txtMLI_AS.setText(""+getMLI_AS()+"");
 
         getZonesPer();
+        getQuadrantPer();
 
         Bitmap bmp;
         String filename = getIntent().getStringExtra("IMAGE");
@@ -103,7 +104,39 @@ public class Results extends AppCompatActivity {
     }
 
     private void getZonesPer(){
-        float A, B, C, D;
+        int A=0, B=0, C=0, D=0;
+        for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
+            Double dist = Math.sqrt(Math.pow(e.getValue()[0],2)+Math.pow(e.getValue()[1],2));
+            if(dist<=5.0)
+                A++;
+            else if(dist<=10.0)
+                B++;
+            else if (dist<=15.0)
+                C++;
+            else
+                D++;
+        }
+         txtTZ_A.setText("A: "+A+"");
+         txtTZ_B.setText("B: "+B+"");
+         txtTZ_C.setText("C: "+C+"");
+         txtTZ_D.setText("D: "+D+"");
+    }
 
+    private void getQuadrantPer(){
+        int A=0, B=0, C=0, D=0;
+        for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
+            if(e.getValue()[0]>0 && e.getValue()[1]>0)
+                A++;
+            else if(e.getValue()[0]<0 && e.getValue()[1]>0)
+                B++;
+            else if (e.getValue()[0]<0 && e.getValue()[1]<0)
+                C++;
+            else
+                D++;
+        }
+        txtTQ_I.setText("I: "+A+"");
+        txtTQ_II.setText("II: "+B+"");
+        txtTQ_III.setText("III: "+C+"");
+        txtTQ_IV.setText("IV: "+D+"");
     }
 }

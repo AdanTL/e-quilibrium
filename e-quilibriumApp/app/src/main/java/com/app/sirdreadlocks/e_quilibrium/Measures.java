@@ -37,7 +37,6 @@ public class Measures extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
 
-        results = new HashMap<>();
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -92,6 +91,7 @@ public class Measures extends AppCompatActivity {
 
         btnStart.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+                results = new HashMap<>();
                 mCanvasView.cleanRadar();
                 asyncTest = new AsyncTest();
                 asyncTest.execute();

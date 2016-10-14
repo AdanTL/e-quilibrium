@@ -1,6 +1,7 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -8,6 +9,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,18 +27,22 @@ import java.util.Map;
 import static java.lang.Thread.sleep;
 
 public class Measures extends AppCompatActivity {
-    private TextView textX, textY;
+    private TextView textX, textY, txtCountDown;
     private SensorManager sensorManager;
     private Sensor accelerometer, magnetometer;
-    private Button btnCOB, btnStart, btnEnd;
+    private Button btnCOB, btnStart, btnEnd, btnSettings;
     private HashMap<String, Double[]> results, calib;
     private AsyncTest asyncTest;
     private AsyncCalib asyncCalib;
     private Double pitch = null, roll = null, cob_x = 0.0, cob_y = 0.0;
     private CanvasView mCanvasView;
     private Bitmap bmp;
+    private boolean cdFinished;
+    private SharedPreferences pref;
 
     public void onCreate(Bundle savedInstanceState) {
+
+        //pref = PreferenceManager.getDefaultSharedPreferences(R.xml.preferences);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -48,10 +55,19 @@ public class Measures extends AppCompatActivity {
 
         textX = (TextView) findViewById(R.id.textX);
         textY = (TextView) findViewById(R.id.textY);
+        txtCountDown = (TextView) findViewById(R.id.txtCountDown);
 
+        btnSettings = (Button) findViewById(R.id.btnSettings);
         btnCOB = (Button) findViewById(R.id.btnCOB);
         btnStart = (Button) findViewById(R.id.btnStart);
         btnEnd = (Button) findViewById(R.id.btnEnd);
+
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Measures.this, Settings.class));
+            }
+        });
 
         btnEnd.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
@@ -91,10 +107,23 @@ public class Measures extends AppCompatActivity {
 
         btnStart.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+                cdFinished = false;
                 results = new HashMap<>();
                 mCanvasView.cleanRadar();
                 asyncTest = new AsyncTest();
                 asyncTest.execute();
+                new CountDownTimer(20000, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+                        txtCountDown.setText("seconds remaining: " + millisUntilFinished / 1000);
+                    }
+
+                    public void onFinish() {
+                        txtCountDown.setText("done!");
+                        cdFinished=true;
+                    }
+
+                }.start();
             }
         });
 
@@ -163,7 +192,8 @@ public class Measures extends AppCompatActivity {
             //Empty while to wait sensors' set up
             while (getPitch()==null || getRoll()==null){}
 
-            for(int i=0; i<400; i++){
+            //for(int i=0; i<400; i++){
+            while(!cdFinished){
                 //get samples at 20HZ
                 try {
                     sleep(50);

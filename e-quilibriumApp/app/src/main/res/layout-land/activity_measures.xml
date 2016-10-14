@@ -61,4 +61,23 @@
         android:layout_alignStart="@+id/btnStart"
         android:id="@+id/btnCOB" />
 
+    <TextView
+        android:text="00:00"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/btnCOB"
+        android:layout_alignStart="@+id/btnCOB"
+        android:layout_marginTop="42dp"
+        android:id="@+id/txtCountDown" />
+
+    <Button
+        android:text="Settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnCOB"
+        android:layout_alignLeft="@+id/btnCOB"
+        android:layout_alignStart="@+id/btnCOB"
+        android:id="@+id/btnSettings" />
+
 </RelativeLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Test settings">
+        <EditTextPreference
+            android:key="testTime"
+            android:title="Test Time"
+            android:summary="Input time in seconds"
+            android:dialogTitle="Input a value"
+            android:defaultValue="20" />
+    </PreferenceCategory>
+</PreferenceScreen>

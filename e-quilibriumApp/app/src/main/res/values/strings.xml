@@ -6,4 +6,6 @@
     <string name="end">End</string>
     <string name="getcob">GetCOB</string>
     <string name="start">Start</string>
+    <string name="title_activity_settings">Settings</string>
+
 </resources>

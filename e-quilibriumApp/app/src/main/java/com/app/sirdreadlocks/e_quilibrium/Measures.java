@@ -53,6 +53,8 @@ public class Measures extends AppCompatActivity {
         setContentView(R.layout.activity_measures);
         mCanvasView = (CanvasView) findViewById(R.id.canvasView);
 
+
+
         textX = (TextView) findViewById(R.id.textX);
         textY = (TextView) findViewById(R.id.textY);
         txtCountDown = (TextView) findViewById(R.id.txtCountDown);

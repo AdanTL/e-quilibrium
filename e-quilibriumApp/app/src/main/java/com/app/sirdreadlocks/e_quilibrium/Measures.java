@@ -50,6 +50,7 @@ public class Measures extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         //XML View
+        
         setContentView(R.layout.activity_measures);
         mCanvasView = (CanvasView) findViewById(R.id.canvasView);
 

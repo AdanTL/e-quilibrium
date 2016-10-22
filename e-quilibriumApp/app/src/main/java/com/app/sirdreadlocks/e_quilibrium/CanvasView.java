@@ -49,7 +49,7 @@ public class CanvasView extends View {
         super.onDraw(canvas);
 
         //Radar circles
-        for (int i = 1; i < maxRadius; i += maxRadius / 4)
+        for (float i = 0; i <= maxRadius; i += maxRadius / 4)
             canvas.drawCircle(c_x, c_y, i, radar);
 
         //Radar lines
@@ -91,6 +91,7 @@ public class CanvasView extends View {
         float usableWidth = (float) w - (float) (getPaddingLeft() + getPaddingRight());
         float usableHeight = (float) h - (float) (getPaddingTop() + getPaddingBottom());
 
+        //get center of view
         maxRadius = Math.min(usableWidth, usableHeight) / 2;
         c_x = getPaddingLeft() + (usableWidth / 2);
         c_y = getPaddingTop() + (usableHeight / 2);

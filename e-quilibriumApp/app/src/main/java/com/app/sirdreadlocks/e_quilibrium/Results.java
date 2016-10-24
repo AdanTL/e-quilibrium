@@ -11,11 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.graphics.DashPathEffect;
 
-import com.androidplot.util.PixelUtils;
-import com.androidplot.xy.SimpleXYSeries;
-import com.androidplot.xy.XYSeries;
-import com.androidplot.xy.*;
-
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;

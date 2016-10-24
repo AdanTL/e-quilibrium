@@ -107,7 +107,6 @@
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        ap:srcCompat="@color/ap_transparent"
         android:id="@+id/imgRadar"
         android:layout_marginStart="16dp"
         ap:layout_constraintLeft_toLeftOf="parent"

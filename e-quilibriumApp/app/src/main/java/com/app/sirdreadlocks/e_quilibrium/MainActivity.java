@@ -6,22 +6,24 @@ import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnStart;
+    private Button btnNewPat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnStart = (Button)findViewById(R.id.startButton);
+        btnNewPat = (Button)findViewById(R.id.btnNewPat);
 
-        btnStart.setOnClickListener(new View.OnClickListener(){
+        btnNewPat.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
 
                 Intent intent =
-                        new Intent(MainActivity.this, Patient.class);
+                        new Intent(MainActivity.this, NewPatient.class);
 
                 startActivity(intent);
             }

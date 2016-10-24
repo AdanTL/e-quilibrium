@@ -9,21 +9,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
+
+        </activity>
+        <activity
+            android:name=".Measures"
+            android:screenOrientation="landscape" />
+        <activity android:name=".Results" />
+        <activity
+            android:name=".Patient"
+            android:label="@string/title_activity_patient" />
+        <activity
+            android:name=".Settings"
+            android:label="Settings" />
+        <activity
+            android:name=".NewPatient"
+            android:label="New Patient"/>
+        <activity android:name=".Authentication">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".Measures"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".Results" />
-        <activity
-            android:name=".Patient"
-            android:label="@string/title_activity_patient" />
-        <activity android:name=".Settings"
-            android:label="Settings">
         </activity>
     </application>
 

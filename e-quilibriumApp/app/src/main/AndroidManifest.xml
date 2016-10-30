@@ -20,9 +20,6 @@
             android:screenOrientation="landscape" />
         <activity android:name=".Results" />
         <activity
-            android:name=".Patient"
-            android:label="@string/title_activity_patient" />
-        <activity
             android:name=".Settings"
             android:label="Settings" />
         <activity

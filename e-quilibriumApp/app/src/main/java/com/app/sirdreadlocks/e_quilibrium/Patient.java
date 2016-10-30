@@ -1,70 +1,42 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
-import android.content.ContentValues;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-
 /**
- * Register screen to save patient info before test.
+ * Created by Adán on 30/10/2016.
  */
-public class Patient extends AppCompatActivity {
 
-    /**
-     * UI variables
-     */
-    private EditText txtID;
-    private EditText txtSurname;
-    private EditText txtName;
-    private Button btnSubmit;
+public class Patient {
 
-    /**
-     * DB
-     */
-    private SQLiteDatabase db;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient);
+    private String name;
+    private String email;
+    private String surname;
+    private String phone;
 
-        txtID = (EditText)findViewById(R.id.inputID);
-        txtName = (EditText)findViewById(R.id.inputName);
-        txtSurname = (EditText)findViewById(R.id.inputSurname);
 
-        btnSubmit = (Button)findViewById(R.id.submit);
+    public Patient() {
+        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
 
-        /**
-         * Open DB writer mode
-         */
-        PatientSQLiteHelper pdbh = new PatientSQLiteHelper(this,"DBPatients", null, 1);
+    public Patient(String name, String surname, String email, String phone) {
+        this.name = name;
+        this.email = email;
+        this.surname = surname;
+        this.phone = phone;
+    }
 
-        db = pdbh.getWritableDatabase();
+    public String getName() {
+        return name;
+    }
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String mID = txtID.getText().toString();
-                String mSurname = txtSurname.getText().toString();
-                String mName = txtName.getText().toString();
+    public String getEmail() {
+        return email;
+    }
 
-                ContentValues newRegister = new ContentValues();
-                newRegister.put("ID", mID);
-                newRegister.put("Surname", mSurname);
-                newRegister.put("Name", mName);
-                db.insert("Patient", null, newRegister);
+    public String getSurname() {
+        return surname;
+    }
 
-                Intent intent =
-                        new Intent(Patient.this, Measures.class);
-
-                startActivity(intent);
-            }
-        });
-
+    public String getPhone() {
+        return phone;
     }
 }
-

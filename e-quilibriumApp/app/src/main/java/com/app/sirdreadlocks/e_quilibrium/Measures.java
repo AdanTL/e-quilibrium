@@ -75,7 +75,8 @@ public class Measures extends AppCompatActivity {
         btnEnd.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
 
-                asyncTest.cancel(true);
+                if(asyncTest != null)
+                    asyncTest.cancel(true);
 
                 Intent intent =
                         new Intent(Measures.this, Results.class);
@@ -97,8 +98,10 @@ public class Measures extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                startActivity(intent);
+                if(results !=null)
+                    startActivity(intent);
+                else
+                    Toast.makeText(Measures.this,"No one test has done",Toast.LENGTH_SHORT).show();
             }
         });
     }

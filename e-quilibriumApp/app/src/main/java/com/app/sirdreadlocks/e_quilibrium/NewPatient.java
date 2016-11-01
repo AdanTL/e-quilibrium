@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,14 +40,20 @@ public class NewPatient extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 newPat = new Patient(
+                        txtID.getText().toString(),
                         txtName.getText().toString(),
                         txtSurname.getText().toString(),
                         txtEmail.getText().toString(),
                         txtPhone.getText().toString());
 
-                database.child(auth.getCurrentUser().getUid()).child(txtID.getText().toString()).setValue(newPat);
+                if(!newPat.isNull()) {
 
-                startActivity(new Intent(NewPatient.this,Measures.class));
+                    database.child(auth.getCurrentUser().getUid()).child(txtID.getText().toString()).setValue(newPat);
+
+                    startActivity(new Intent(NewPatient.this, Measures.class));
+                }else{
+                    Toast.makeText(NewPatient.this,"New patient is wrong",Toast.LENGTH_SHORT).show();
+                }
 
             }
 

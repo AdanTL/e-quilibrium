@@ -17,7 +17,7 @@ import static com.firebase.ui.auth.ui.AcquireEmailHelper.RC_SIGN_IN;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnNewPat,btnSignOut;
+    private Button btnNewPat, btnSignOut, btnListPat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +45,19 @@ public class MainActivity extends AppCompatActivity {
 
         btnNewPat = (Button) findViewById(R.id.btnNewPat);
         btnSignOut = (Button) findViewById(R.id.btnSignOut);
+        btnListPat = (Button) findViewById(R.id.btnListPat);
 
 
         btnNewPat.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, NewPatient.class));
+            }
+        });
 
-                Intent intent =
-                        new Intent(MainActivity.this, NewPatient.class);
-
-                startActivity(intent);
+        btnListPat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ListPatients.class));
             }
         });
 

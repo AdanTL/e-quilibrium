@@ -2,12 +2,15 @@ package com.app.sirdreadlocks.e_quilibrium;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -19,8 +22,7 @@ import java.util.ArrayList;
 
 public class ListPatients extends AppCompatActivity {
     private ArrayList<Patient> patients;
-    private FirebaseListAdapter<Patient> adapter;
-    private ListView listPatient;
+    private RecyclerView listPatient;
     private DatabaseReference database;
     private FirebaseAuth auth;
     @Override
@@ -31,18 +33,41 @@ public class ListPatients extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference("patients/"+auth.getCurrentUser().getUid());
         patients = new ArrayList<>();
-        adapter = new FirebaseListAdapter<Patient>(this, Patient.class, android.R.layout.simple_list_item_1, database) {
-            @Override
-            protected void populateView(View v, Patient model, int position) {
-                TextView text = (TextView)v.findViewById(android.R.id.text1);
-                text.setText(model.getId());
 
+
+        listPatient = (RecyclerView) findViewById(R.id.listPatient);
+        listPatient.setHasFixedSize(true);
+        listPatient.setLayoutManager(new LinearLayoutManager(this));
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseRecyclerAdapter<Patient,CardViewHolder> adapter =
+                new FirebaseRecyclerAdapter<Patient, CardViewHolder>(
+                        Patient.class,
+                        android.R.layout.simple_list_item_2,
+                        CardViewHolder.class,
+                        database
+                ) {
+            @Override
+            protected void populateViewHolder(CardViewHolder viewHolder, Patient model, int position) {
+                viewHolder.mText.setText(model.getId()+'\n'+model.getEmail()+'\n'+model.getName());
             }
         };
 
-        listPatient = (ListView) findViewById(R.id.listPatient);
         listPatient.setAdapter(adapter);
+    }
 
+    public static class CardViewHolder extends RecyclerView.ViewHolder{
+        TextView mText;
 
+        public CardViewHolder(View v){
+            super(v);
+            mText = (TextView) v.findViewById(android.R.id.text1);
+        }
     }
 }

@@ -49,13 +49,14 @@ public class ListPatients extends AppCompatActivity {
         FirebaseRecyclerAdapter<Patient,CardViewHolder> adapter =
                 new FirebaseRecyclerAdapter<Patient, CardViewHolder>(
                         Patient.class,
-                        android.R.layout.simple_list_item_2,
+                        R.layout.card_list_patient,
                         CardViewHolder.class,
                         database
                 ) {
             @Override
-            protected void populateViewHolder(CardViewHolder viewHolder, Patient model, int position) {
-                viewHolder.mText.setText(model.getId()+'\n'+model.getEmail()+'\n'+model.getName());
+            protected void populateViewHolder(CardViewHolder viewHolder, Patient patient, int position) {
+                viewHolder.setText(patient.getId());
+                viewHolder.setName(patient.getName());
             }
         };
 
@@ -63,11 +64,21 @@ public class ListPatients extends AppCompatActivity {
     }
 
     public static class CardViewHolder extends RecyclerView.ViewHolder{
-        TextView mText;
+        View mView;
 
         public CardViewHolder(View v){
             super(v);
-            mText = (TextView) v.findViewById(android.R.id.text1);
+            mView = v;
+        }
+
+        public void setName(String name) {
+            TextView field = (TextView) mView.findViewById(R.id.txtName);
+            field.setText(name);
+        }
+
+        public void setText(String text) {
+            TextView field = (TextView) mView.findViewById(R.id.txtEmail);
+            field.setText(text);
         }
     }
 }

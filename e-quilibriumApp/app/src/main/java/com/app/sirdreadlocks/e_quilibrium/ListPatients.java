@@ -1,5 +1,6 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -57,6 +58,14 @@ public class ListPatients extends AppCompatActivity {
             protected void populateViewHolder(CardViewHolder viewHolder, Patient patient, int position) {
                 viewHolder.setText(patient.getId());
                 viewHolder.setName(patient.getName());
+
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(ListPatients.this, Measures.class));
+                    }
+                });
+
             }
         };
 

@@ -59,8 +59,7 @@ public class ListPatients extends AppCompatActivity {
         listPatient = (RecyclerView) findViewById(R.id.listPatient);
         listPatient.setHasFixedSize(true);
         listPatient.setLayoutManager(new LinearLayoutManager(this));
-
-
+        
     }
 
 }

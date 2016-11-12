@@ -19,7 +19,7 @@
         </activity>
         <activity
             android:name=".Measures"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"/>
         <activity android:name=".Results" />
         <activity
             android:name=".Settings"

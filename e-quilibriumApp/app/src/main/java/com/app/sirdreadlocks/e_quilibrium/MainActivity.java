@@ -61,27 +61,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AuthUI.getInstance()
-                        .signOut(MainActivity.this)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            public void onComplete(@NonNull Task<Void> task) {
-                                // user is now signed out
-                                startActivityForResult(
-                                        AuthUI.getInstance().createSignInIntentBuilder()
-                                                .setIsSmartLockEnabled(false)
-                                                .setProviders(
-                                                    AuthUI.EMAIL_PROVIDER,
-                                                    AuthUI.GOOGLE_PROVIDER,
-                                                    AuthUI.FACEBOOK_PROVIDER)
-                                                .setTheme(R.style.GreenTheme).build(),
-                                        RC_SIGN_IN);
-                            }
-                        });
-            }
-        });
+
 
     }
 

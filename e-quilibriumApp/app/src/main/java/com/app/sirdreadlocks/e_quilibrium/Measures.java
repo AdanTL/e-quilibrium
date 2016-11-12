@@ -52,6 +52,7 @@ public class Measures extends AppCompatActivity {
         //XML View
         
         setContentView(R.layout.activity_measures);
+        getSupportActionBar().hide();
         mCanvasView = (CanvasView) findViewById(R.id.canvasView);
 
 

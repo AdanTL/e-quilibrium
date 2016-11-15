@@ -5,9 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.support.v7.widget.RecyclerView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,10 +36,13 @@ public class ListPatients extends AppCompatActivity {
     private DatabaseReference database;
     private FirebaseAuth auth;
     private PatientsAdapter adapter;
+    private EditText txtFilter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_patients);
+
+        txtFilter = (EditText)findViewById(R.id.txtFilter);
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference("patients/"+auth.getCurrentUser().getUid());
@@ -59,6 +65,23 @@ public class ListPatients extends AppCompatActivity {
         listPatient = (RecyclerView) findViewById(R.id.listPatient);
         listPatient.setHasFixedSize(true);
         listPatient.setLayoutManager(new LinearLayoutManager(this));
+
+        txtFilter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         
     }
 

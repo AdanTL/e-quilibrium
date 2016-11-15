@@ -7,8 +7,14 @@
 
     tools:context="com.app.sirdreadlocks.e_quilibrium.ListPatients">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/txtFilter"/>
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listPatient"/>
+        android:id="@+id/listPatient"
+        android:layout_below="@+id/txtFilter"/>
 </RelativeLayout>

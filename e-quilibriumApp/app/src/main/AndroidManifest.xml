@@ -20,7 +20,10 @@
         <activity
             android:name=".Measures"
             android:screenOrientation="landscape"/>
-        <activity android:name=".Results" />
+        <activity
+            android:name=".Results"
+            android:label="Results"
+            android:configChanges="screenSize|orientation"/>
         <activity
             android:name=".Settings"
             android:label="Settings" />

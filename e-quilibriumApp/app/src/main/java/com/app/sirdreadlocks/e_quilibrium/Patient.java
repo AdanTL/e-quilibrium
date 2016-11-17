@@ -1,10 +1,12 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
+import java.io.Serializable;
+
 /**
  * Created by Adán on 30/10/2016.
  */
 
-public class Patient {
+public class Patient implements Serializable{
 
 
     private String name;
@@ -15,7 +17,7 @@ public class Patient {
 
 
     public Patient() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        // Default constructor required for calls to DataSnapshot.getValue(Patient.class)
     }
 
     public Patient(String id, String name, String surname, String email, String phone) {

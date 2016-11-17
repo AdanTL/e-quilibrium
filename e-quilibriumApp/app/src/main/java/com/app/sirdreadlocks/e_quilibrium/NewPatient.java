@@ -26,7 +26,7 @@ public class NewPatient extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_patient);
         auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance().getReference("patients");
+        database = FirebaseDatabase.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/patients");
 
         txtName = (EditText) findViewById(R.id.txtName);
         txtSurname = (EditText) findViewById(R.id.txtSurname);
@@ -48,7 +48,7 @@ public class NewPatient extends AppCompatActivity {
 
                 if(!newPat.isNull()) {
 
-                    database.child(auth.getCurrentUser().getUid()).child(txtID.getText().toString()).setValue(newPat);
+                    database.child(txtID.getText().toString()).setValue(newPat);
 
                     startActivity(new Intent(NewPatient.this, Measures.class));
                 }else{

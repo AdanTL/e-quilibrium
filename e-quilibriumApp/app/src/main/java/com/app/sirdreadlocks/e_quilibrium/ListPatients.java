@@ -45,7 +45,7 @@ public class ListPatients extends AppCompatActivity {
         txtFilter = (EditText)findViewById(R.id.txtFilter);
 
         auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance().getReference("patients/"+auth.getCurrentUser().getUid());
+        database = FirebaseDatabase.getInstance().getReference(auth.getCurrentUser().getUid()+"/patients");
 
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

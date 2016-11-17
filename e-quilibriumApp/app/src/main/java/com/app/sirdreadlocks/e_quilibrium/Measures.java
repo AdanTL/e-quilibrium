@@ -39,6 +39,7 @@ public class Measures extends AppCompatActivity {
     private Bitmap bmp;
     private boolean cdFinished;
     private SharedPreferences pref;
+    private Patient currentPat;
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -49,6 +50,9 @@ public class Measures extends AppCompatActivity {
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         super.onCreate(savedInstanceState);
+
+        currentPat = (Patient) getIntent().getExtras().getSerializable("PATIENT");
+
         //XML View
         
         setContentView(R.layout.activity_measures);
@@ -82,6 +86,7 @@ public class Measures extends AppCompatActivity {
                 Intent intent =
                         new Intent(Measures.this, Results.class);
                 intent.putExtra("RESULTS",results);
+                intent.putExtra("PATIENT",currentPat);
 
                 try {
                     //Write file
@@ -184,9 +189,10 @@ public class Measures extends AppCompatActivity {
                     roll = Math.toDegrees(orientation[2]);
 
                     //Show all data but only need pitch(rotation in X axis) and roll (rotation in Y)
-                    textX.setText("X : " + pitch.floatValue() + " º");//pitch goes from -90 to 90
-                    textY.setText("Y : " + roll.floatValue() + " º");//roll goes from -90 to 90
-
+                    /*    textX.setText("X : " + pitch.floatValue() + " º");//pitch goes from -90 to 90
+                        textY.setText("Y : " + roll.floatValue() + " º");//roll goes from -90 to 90*/
+                        textX.setText("X : " + getPitch() + " º");//pitch with COB
+                        textY.setText("Y : " + getRoll() + " º");//roll with COB
                 }
             }
         }

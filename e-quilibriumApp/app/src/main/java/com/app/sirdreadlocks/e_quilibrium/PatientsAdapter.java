@@ -65,8 +65,10 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.CardVi
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(),"amor "+pat.getName(),Toast.LENGTH_LONG).show();
-                    v.getContext().startActivity(new Intent(v.getContext(),Measures.class));
+                    Intent intent =
+                            new Intent(v.getContext(), Measures.class);
+                    intent.putExtra("PATIENT",pat);
+                    v.getContext().startActivity(intent);
                 }
             });
         }

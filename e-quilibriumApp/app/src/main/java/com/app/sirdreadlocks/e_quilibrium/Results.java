@@ -3,6 +3,8 @@ package com.app.sirdreadlocks.e_quilibrium;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.provider.*;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -11,6 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.graphics.DashPathEffect;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,13 +33,27 @@ public class Results extends AppCompatActivity {
     private Map<String, Double[]> results;
     private Map<String, Double[]> resultsSorted;
     private String strResults = "";
+    private Test test;
+    private float TZ_A ;
+    private float TZ_B ;
+    private float TZ_C ;
+    private float TZ_D ;
+    private float TQ_I ;
+    private float TQ_II ;
+    private float TQ_III;
+    private float TQ_IV ;
+    private FirebaseAuth auth;
+    private DatabaseReference database;
+    private StorageReference storage;
+    private Patient currentPat;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
-        // get Map from Intent
+        // get data from Intent
         results = (HashMap<String, Double[]>) this.getIntent().getSerializableExtra("RESULTS");
+        currentPat = (Patient)getIntent().getSerializableExtra("PATIENT");
 
         // sort Map
         resultsSorted = new TreeMap<>(results);
@@ -56,20 +79,35 @@ public class Results extends AppCompatActivity {
         txtOSI_AS.setText(""+getOSI_AS()+"");
         txtAPI_AS.setText(""+getAPI_AS()+"");
         txtMLI_AS.setText(""+getMLI_AS()+"");
+        txtOSI_SD.setText(""+getOSI_SD()+"");
+        txtAPI_SD.setText(""+getAPI_SD()+"");
+        txtMLI_SD.setText(""+getMLI_SD()+"");
 
         getZonesPer();
         getQuadrantPer();
 
         Bitmap bmp;
         String filename = getIntent().getStringExtra("IMAGE");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             FileInputStream is = this.openFileInput(filename);
             bmp = BitmapFactory.decodeStream(is);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             imgRadar.setImageBitmap(bmp);
             is.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        test = new Test("Default",getOSI_AS(),getOSI_SD(),getAPI_AS(),getAPI_SD(),getMLI_AS(),getMLI_SD(),TZ_A,TZ_B,TZ_C,TZ_D,TQ_I,TQ_II,TQ_III,TQ_IV);
+
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/tests/"+currentPat.getId());
+        storage = FirebaseStorage.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/"+currentPat.getId());
+        database.child(""+System.currentTimeMillis()+"").setValue(test);
+
+        byte[] data = baos.toByteArray();
+        storage.child(System.currentTimeMillis()+"/radar.jpg").putBytes( data );
     }
 
     private float getOSI_AS(){
@@ -77,17 +115,43 @@ public class Results extends AppCompatActivity {
         float sumY = 0;
         for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
             sumX += Math.pow(0-e.getValue()[0],2);
-            sumY += Math.pow(e.getValue()[1],2);
+            sumY += Math.pow(0-e.getValue()[1],2);
         }
-        return (float)Math.sqrt(sumX+sumY/resultsSorted.size());
+        return (float)Math.sqrt((sumX+sumY)/resultsSorted.size());
+    }
+
+    private float getOSI_SD(){
+        float mDef = 0;
+        float stdDev = 0;
+        for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
+            mDef += Math.sqrt(Math.pow(e.getValue()[0],2)+Math.pow(e.getValue()[1],2));
+        }
+        mDef = mDef/resultsSorted.size();
+        for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
+            stdDev += Math.sqrt(Math.pow(Math.sqrt(Math.pow(e.getValue()[0],2)+Math.pow(e.getValue()[1],2))-mDef,2));
+        }
+        return stdDev/resultsSorted.size();
     }
 
     private float getAPI_AS(){
         float sumY = 0;
         for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
-            sumY += Math.pow(e.getValue()[1],2);
+            sumY += Math.pow(0-e.getValue()[1],2);
         }
         return (float)Math.sqrt(sumY/resultsSorted.size());
+    }
+
+    private float getAPI_SD() {
+        float mDef = 0;
+        float stdDev = 0;
+        for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
+            mDef += e.getValue()[1];
+        }
+        mDef = mDef / resultsSorted.size();
+        for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
+            stdDev += Math.sqrt(Math.pow(e.getValue()[1] - mDef, 2));
+        }
+        return stdDev / resultsSorted.size();
     }
 
     private float getMLI_AS(){
@@ -96,6 +160,19 @@ public class Results extends AppCompatActivity {
             sumX += Math.pow(0-e.getValue()[0],2);
         }
         return (float)Math.sqrt(sumX/resultsSorted.size());
+    }
+
+    private float getMLI_SD() {
+        float mDef = 0;
+        float stdDev = 0;
+        for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
+            mDef += e.getValue()[0];
+        }
+        mDef = mDef / resultsSorted.size();
+        for (HashMap.Entry<String, Double[]> e : resultsSorted.entrySet()) {
+            stdDev += Math.sqrt(Math.pow(e.getValue()[0] - mDef, 2));
+        }
+        return stdDev / resultsSorted.size();
     }
 
     private void getZonesPer(){
@@ -111,10 +188,15 @@ public class Results extends AppCompatActivity {
             else
                 D++;
         }
-         txtTZ_A.setText("A: "+A+"");
-         txtTZ_B.setText("B: "+B+"");
-         txtTZ_C.setText("C: "+C+"");
-         txtTZ_D.setText("D: "+D+"");
+        TZ_A = (A*100)/((float) resultsSorted.size());
+        TZ_B = (B*100)/((float) resultsSorted.size());
+        TZ_C = (C*100)/((float) resultsSorted.size());
+        TZ_D = (D*100)/((float) resultsSorted.size());
+
+        txtTZ_A.setText("A: "+TZ_A+"");
+        txtTZ_B.setText("B: "+TZ_B+"");
+        txtTZ_C.setText("C: "+TZ_C+"");
+        txtTZ_D.setText("D: "+TZ_D+"");
     }
 
     private void getQuadrantPer(){
@@ -129,9 +211,14 @@ public class Results extends AppCompatActivity {
             else
                 D++;
         }
-        txtTQ_I.setText("I: "+A+"");
-        txtTQ_II.setText("II: "+B+"");
-        txtTQ_III.setText("III: "+C+"");
-        txtTQ_IV.setText("IV: "+D+"");
+        TQ_I = (A*100)/((float) resultsSorted.size());
+        TQ_II = (B*100)/((float) resultsSorted.size());
+        TQ_III = (C*100)/((float) resultsSorted.size());
+        TQ_IV = (D*100)/((float) resultsSorted.size());
+
+        txtTQ_I.setText("I: "+TQ_I+"");
+        txtTQ_II.setText("II: "+TQ_II+"");
+        txtTQ_III.setText("III: "+TQ_III+"");
+        txtTQ_IV.setText("IV: "+TQ_IV+"");
     }
 }

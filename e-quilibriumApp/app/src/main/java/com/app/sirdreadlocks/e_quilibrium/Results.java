@@ -16,7 +16,10 @@ import android.graphics.DashPathEffect;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +44,7 @@ public class Results extends AppCompatActivity {
     private float TQ_IV ;
     private FirebaseAuth auth;
     private DatabaseReference database;
+    private StorageReference storage;
     private Patient currentPat;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -84,9 +88,11 @@ public class Results extends AppCompatActivity {
 
         Bitmap bmp;
         String filename = getIntent().getStringExtra("IMAGE");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             FileInputStream is = this.openFileInput(filename);
             bmp = BitmapFactory.decodeStream(is);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             imgRadar.setImageBitmap(bmp);
             is.close();
         } catch (Exception e) {
@@ -97,8 +103,11 @@ public class Results extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/tests/"+currentPat.getId());
+        storage = FirebaseStorage.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/"+currentPat.getId());
         database.child(""+System.currentTimeMillis()+"").setValue(test);
 
+        byte[] data = baos.toByteArray();
+        storage.child(System.currentTimeMillis()+"/radar.jpg").putBytes( data );
     }
 
     private float getOSI_AS(){

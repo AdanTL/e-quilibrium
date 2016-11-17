@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "182473066121",
+    "firebase_url": "https://e-quilibriumapp.firebaseio.com",
+    "project_id": "e-quilibriumapp",
+    "storage_bucket": "e-quilibriumapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:182473066121:android:3de885f65c46ed95",
+        "android_client_info": {
+          "package_name": "com.app.sirdreadlocks.e_quilibrium"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "182473066121-lgc8vnfplfkt2v15679fbhcgfjnmuija.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.sirdreadlocks.e_quilibrium",
+            "certificate_hash": "606F562838976465513DC5C7A44068E61911C967"
+          }
+        },
+        {
+          "client_id": "182473066121-hc5sitavuvvgs5f3hl7dju9gervhn45t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.sirdreadlocks.e_quilibrium",
+            "certificate_hash": "A2BDBD5BA83C363727AD9AA4E5DFA5CA0E9548E8"
+          }
+        },
+        {
+          "client_id": "182473066121-l0f4eci73goo8i9a544emc3ceissgt2o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaz6ZHAOBsMWwZ29MY_ryqpBmGelodhLY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "182473066121-l0f4eci73goo8i9a544emc3ceissgt2o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

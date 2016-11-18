@@ -91,17 +91,10 @@ public class Results extends AppCompatActivity {
         storage = FirebaseStorage.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/"+currentPat.getId());
         long date = System.currentTimeMillis();
 
-        Bitmap bmp;
-        String filename = getIntent().getStringExtra("IMAGE");
-        try {
-            InputStream is = this.openFileInput(filename);
-            storage.child(date+".jpg").putStream(is);
-            bmp = BitmapFactory.decodeStream(is);
-            imgRadar.setImageBitmap(bmp);
-            is.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        byte[] byteArray = getIntent().getByteArrayExtra("IMAGE");
+        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+        imgRadar.setImageBitmap(bmp);
+        storage.child(date+".jpg").putBytes(byteArray);
 
         test = new Test("Default",getOSI_AS(),getOSI_SD(),getAPI_AS(),getAPI_SD(),getMLI_AS(),getMLI_SD(),TZ_A,TZ_B,TZ_C,TZ_D,TQ_I,TQ_II,TQ_III,TQ_IV);
 

@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,22 +89,14 @@ public class Measures extends AppCompatActivity {
                 intent.putExtra("RESULTS",results);
                 intent.putExtra("PATIENT",currentPat);
 
-                try {
-                    //Write file
-                    mCanvasView.setDrawingCacheEnabled(true);
-                    bmp = mCanvasView.getDrawingCache();
-                    String filename = "bitmap.png";
-                    FileOutputStream stream = openFileOutput(filename, Context.MODE_PRIVATE);
-                    bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                mCanvasView.setDrawingCacheEnabled(true);
+                bmp = mCanvasView.getDrawingCache();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG,100,stream);
+                byte[] byteArray = stream.toByteArray();
 
-                    //Cleanup
-                    stream.close();
-                    bmp.recycle();
+                intent.putExtra("IMAGE",byteArray);
 
-                    intent.putExtra("IMAGE", filename);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 if(results !=null)
                     startActivity(intent);
                 else

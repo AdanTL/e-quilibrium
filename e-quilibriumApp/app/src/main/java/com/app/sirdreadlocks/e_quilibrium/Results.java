@@ -21,6 +21,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -86,13 +87,16 @@ public class Results extends AppCompatActivity {
         getZonesPer();
         getQuadrantPer();
 
+        auth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/"+currentPat.getId());
+        long date = System.currentTimeMillis();
+
         Bitmap bmp;
         String filename = getIntent().getStringExtra("IMAGE");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-            FileInputStream is = this.openFileInput(filename);
+            InputStream is = this.openFileInput(filename);
+            storage.child(date+".jpg").putStream(is);
             bmp = BitmapFactory.decodeStream(is);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             imgRadar.setImageBitmap(bmp);
             is.close();
         } catch (Exception e) {
@@ -101,13 +105,11 @@ public class Results extends AppCompatActivity {
 
         test = new Test("Default",getOSI_AS(),getOSI_SD(),getAPI_AS(),getAPI_SD(),getMLI_AS(),getMLI_SD(),TZ_A,TZ_B,TZ_C,TZ_D,TQ_I,TQ_II,TQ_III,TQ_IV);
 
-        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/tests/"+currentPat.getId());
-        storage = FirebaseStorage.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/"+currentPat.getId());
-        database.child(""+System.currentTimeMillis()+"").setValue(test);
 
-        byte[] data = baos.toByteArray();
-        storage.child(System.currentTimeMillis()+"/radar.jpg").putBytes( data );
+        database.child(""+date+"").setValue(test);
+
+
     }
 
     private float getOSI_AS(){

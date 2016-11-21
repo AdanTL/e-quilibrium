@@ -4,11 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -65,13 +70,11 @@ public class PatientDetails extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PatientDetails.this,Measures.class);
-                intent.putExtra("PATIENT",patient);
-                startActivity(intent);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                NewTestAlert alert = new NewTestAlert();
+                String tag = "Alert";
+                alert.show(fragmentManager,tag);
             }
         });
-
-
     }
-
 }

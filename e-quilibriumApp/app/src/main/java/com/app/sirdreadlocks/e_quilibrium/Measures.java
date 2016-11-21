@@ -41,6 +41,7 @@ public class Measures extends AppCompatActivity {
     private boolean cdFinished;
     private SharedPreferences pref;
     private Patient currentPat;
+    private String type;
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -53,11 +54,14 @@ public class Measures extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         currentPat = (Patient) getIntent().getExtras().getSerializable("PATIENT");
-
+        type = getIntent().getStringExtra("TYPE");
+        Toast.makeText(this,type,Toast.LENGTH_SHORT).show();
         //XML View
         
         setContentView(R.layout.activity_measures);
         getSupportActionBar().hide();
+
+
         mCanvasView = (CanvasView) findViewById(R.id.canvasView);
 
 
@@ -96,6 +100,7 @@ public class Measures extends AppCompatActivity {
                 byte[] byteArray = stream.toByteArray();
 
                 intent.putExtra("IMAGE",byteArray);
+                intent.putExtra("TYPE",type);
 
                 if(results !=null)
                     startActivity(intent);

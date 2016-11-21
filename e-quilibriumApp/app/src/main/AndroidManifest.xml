@@ -19,7 +19,7 @@
         </activity>
         <activity
             android:name=".Measures"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".Results"
             android:label="Results"
@@ -30,7 +30,14 @@
         <activity
             android:name=".NewPatient"
             android:label="New Patient" />
-        <activity android:name=".ListPatients"></activity>
+        <activity
+            android:name=".ListPatients"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:name=".PatientDetails"
+            android:label="@string/title_activity_patient_details"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="screenSize|orientation"/>
     </application>
 
 </manifest>

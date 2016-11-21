@@ -1,5 +1,6 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -8,6 +9,7 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.KeyEvent;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -94,15 +96,21 @@ public class Results extends AppCompatActivity {
         byte[] byteArray = getIntent().getByteArrayExtra("IMAGE");
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
         imgRadar.setImageBitmap(bmp);
-        storage.child(date+".jpg").putBytes(byteArray);
+        storage.child(date+".png").putBytes(byteArray);
 
-        test = new Test("Default",getOSI_AS(),getOSI_SD(),getAPI_AS(),getAPI_SD(),getMLI_AS(),getMLI_SD(),TZ_A,TZ_B,TZ_C,TZ_D,TQ_I,TQ_II,TQ_III,TQ_IV);
+        test = new Test(date,"Default",getOSI_AS(),getOSI_SD(),getAPI_AS(),getAPI_SD(),getMLI_AS(),getMLI_SD(),TZ_A,TZ_B,TZ_C,TZ_D,TQ_I,TQ_II,TQ_III,TQ_IV);
 
         database = FirebaseDatabase.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/tests/"+currentPat.getId());
 
         database.child(""+date+"").setValue(test);
 
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == event.KEYCODE_BACK)
+            startActivity(new Intent(Results.this,PatientDetails.class).putExtra("PATIENT", currentPat));
+        return super.onKeyDown(keyCode, event);
     }
 
     private float getOSI_AS(){

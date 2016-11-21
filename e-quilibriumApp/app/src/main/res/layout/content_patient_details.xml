@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_list_patients"
+    android:id="@+id/content_patient_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    tools:context="com.app.sirdreadlocks.e_quilibrium.ListPatients">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.app.sirdreadlocks.e_quilibrium.PatientDetails"
+    tools:showIn="@layout/activity_patient_details">
 
     <EditText
         android:layout_width="match_parent"
@@ -18,6 +20,7 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listPatient"
+        android:id="@+id/listTests"
         android:layout_below="@+id/txtFilter"/>
+
 </RelativeLayout>

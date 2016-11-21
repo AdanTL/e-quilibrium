@@ -52,8 +52,10 @@ public class ListPatients extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 GenericTypeIndicator<HashMap<String,Patient>> t = new GenericTypeIndicator<HashMap<String, Patient>>(){};
                 patients = dataSnapshot.getValue(t);
-                adapter = new PatientsAdapter(patients);
-                listPatient.setAdapter(adapter);
+                if(patients != null) {
+                    adapter = new PatientsAdapter(patients);
+                    listPatient.setAdapter(adapter);
+                }
             }
 
             @Override

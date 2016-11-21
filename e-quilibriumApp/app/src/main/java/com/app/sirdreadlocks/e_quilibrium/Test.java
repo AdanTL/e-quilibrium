@@ -5,6 +5,7 @@ package com.app.sirdreadlocks.e_quilibrium;
  */
 
 public class Test {
+    private long date;
     private String type;
     private float OSI_AS;
     private float OSI_SD;
@@ -25,7 +26,8 @@ public class Test {
         // Default constructor required for calls to DataSnapshot.getValue(Test.class)
     }
 
-    public Test(String type, float OSI_AS, float OSI_SD, float API_AS, float API_SD, float MLI_AS, float MLI_SD, float TZ_A, float TZ_B, float TZ_C, float TZ_D, float TQ_I, float TQ_II, float TQ_III, float TQ_IV) {
+    public Test(long date, String type, float OSI_AS, float OSI_SD, float API_AS, float API_SD, float MLI_AS, float MLI_SD, float TZ_A, float TZ_B, float TZ_C, float TZ_D, float TQ_I, float TQ_II, float TQ_III, float TQ_IV) {
+        this.date = date;
         this.type = type;
         this.OSI_AS = OSI_AS;
         this.OSI_SD = OSI_SD;
@@ -41,6 +43,10 @@ public class Test {
         this.TQ_II = TQ_II;
         this.TQ_III = TQ_III;
         this.TQ_IV = TQ_IV;
+    }
+
+    public long getDate() {
+        return date;
     }
 
     public String getType() {

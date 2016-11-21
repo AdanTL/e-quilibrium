@@ -1,6 +1,5 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +33,7 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.CardVi
     public CardViewHolder onCreateViewHolder(final ViewGroup viewGroup, int viewType) {
 
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.card_list_patient, viewGroup, false);
+                .inflate(R.layout.card_list, viewGroup, false);
 
         CardViewHolder cvh = new CardViewHolder(itemView);
 
@@ -66,7 +64,7 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.CardVi
                 @Override
                 public void onClick(View v) {
                     Intent intent =
-                            new Intent(v.getContext(), Measures.class);
+                            new Intent(v.getContext(), PatientDetails.class);
                     intent.putExtra("PATIENT",pat);
                     v.getContext().startActivity(intent);
                 }
@@ -75,8 +73,8 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.CardVi
 
         public void holderBinder(Patient pat) {
             this.pat = pat;
-            TextView name = (TextView) mView.findViewById(R.id.txtName);
-            TextView email = (TextView) mView.findViewById(R.id.txtEmail);
+            TextView name = (TextView) mView.findViewById(R.id.txtCard1);
+            TextView email = (TextView) mView.findViewById(R.id.txtCard2);
             name.setText(pat.getName());
             email.setText(pat.getEmail());
         }

@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,9 +27,9 @@ public class NewPatient extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/patients");
 
-        txtName = (EditText) findViewById(R.id.txtName);
+        txtName = (EditText) findViewById(R.id.txtCard1);
         txtSurname = (EditText) findViewById(R.id.txtSurname);
-        txtEmail = (EditText) findViewById(R.id.txtEmail);
+        txtEmail = (EditText) findViewById(R.id.txtCard2);
         txtPhone = (EditText) findViewById(R.id.txtPhone);
         txtID = (EditText) findViewById(R.id.txtID);
 

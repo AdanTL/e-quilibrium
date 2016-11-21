@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/txtName"
+        android:id="@+id/txtCard1"
         app:layout_constraintTop_toBottomOf="@+id/txtID"
         app:layout_constraintLeft_toLeftOf="@+id/txtID"
         android:layout_marginTop="8dp"
@@ -36,9 +36,9 @@
         android:ems="10"
         android:id="@+id/txtSurname"
         android:layout_marginStart="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/txtName"
+        app:layout_constraintLeft_toRightOf="@+id/txtCard1"
         android:layout_marginLeft="8dp"
-        app:layout_constraintTop_toTopOf="@+id/txtName"
+        app:layout_constraintTop_toTopOf="@+id/txtCard1"
         android:hint="Surname" />
 
     <EditText
@@ -46,10 +46,10 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/txtEmail"
+        android:id="@+id/txtCard2"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/txtName"
-        app:layout_constraintLeft_toLeftOf="@+id/txtName"
+        app:layout_constraintTop_toBottomOf="@+id/txtCard1"
+        app:layout_constraintLeft_toLeftOf="@+id/txtCard1"
         android:hint="Email" />
 
     <EditText
@@ -59,8 +59,8 @@
         android:ems="10"
         android:id="@+id/txtPhone"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmail"
-        app:layout_constraintLeft_toLeftOf="@+id/txtEmail"
+        app:layout_constraintTop_toBottomOf="@+id/txtCard2"
+        app:layout_constraintLeft_toLeftOf="@+id/txtCard2"
         android:hint="Phone" />
 
     <Button

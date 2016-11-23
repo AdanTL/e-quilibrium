@@ -3,17 +3,11 @@ package com.app.sirdreadlocks.e_quilibrium;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.provider.*;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.graphics.DashPathEffect;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -21,16 +15,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Results extends AppCompatActivity {
+public class PosturalResults extends AppCompatActivity {
     private ImageView imgRadar;
     private TextView txtOSI_AS, txtOSI_SD, txtAPI_AS, txtAPI_SD, txtMLI_AS, txtMLI_SD, txtTZ_A, txtTZ_B, txtTZ_C, txtTZ_D, txtTQ_I, txtTQ_II, txtTQ_III, txtTQ_IV;
     private Map<String, Double[]> results;
@@ -52,11 +41,12 @@ public class Results extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
+        setContentView(R.layout.activity_postural_results);
 
         // get data from Intent
         results = (HashMap<String, Double[]>) this.getIntent().getSerializableExtra("RESULTS");
         currentPat = (Patient)getIntent().getSerializableExtra("PATIENT");
+        byte[] byteArray = getIntent().getByteArrayExtra("IMAGE");
 
         // sort Map
         resultsSorted = new TreeMap<>(results);
@@ -86,33 +76,36 @@ public class Results extends AppCompatActivity {
         txtAPI_SD.setText(""+getAPI_SD()+"");
         txtMLI_SD.setText(""+getMLI_SD()+"");
 
+        // img setter
+        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+        imgRadar.setImageBitmap(bmp);
+
+        // method calls
         getZonesPer();
         getQuadrantPer();
 
+        // img storage
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/"+currentPat.getId());
         long date = System.currentTimeMillis();
-
-        byte[] byteArray = getIntent().getByteArrayExtra("IMAGE");
-        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
-        imgRadar.setImageBitmap(bmp);
         storage.child(date+".png").putBytes(byteArray);
 
-        test = new Test(date,"Default",getOSI_AS(),getOSI_SD(),getAPI_AS(),getAPI_SD(),getMLI_AS(),getMLI_SD(),TZ_A,TZ_B,TZ_C,TZ_D,TQ_I,TQ_II,TQ_III,TQ_IV);
-
+        // test storage
+        test = new Test(date,"Postural Stability",getOSI_AS(),getOSI_SD(),getAPI_AS(),getAPI_SD(),getMLI_AS(),getMLI_SD(),TZ_A,TZ_B,TZ_C,TZ_D,TQ_I,TQ_II,TQ_III,TQ_IV);
         database = FirebaseDatabase.getInstance().getReference("/"+auth.getCurrentUser().getUid()+"/tests/"+currentPat.getId());
-
         database.child(""+date+"").setValue(test);
 
     }
 
+    /*Override Key Back to step back straight to PatientDetails*/
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == event.KEYCODE_BACK)
-            startActivity(new Intent(Results.this,PatientDetails.class).putExtra("PATIENT", currentPat));
+            startActivity(new Intent(PosturalResults.this,PatientDetails.class).putExtra("PATIENT", currentPat));
         return super.onKeyDown(keyCode, event);
     }
 
+    /* Results getters */
     private float getOSI_AS(){
         float sumX = 0;
         float sumY = 0;

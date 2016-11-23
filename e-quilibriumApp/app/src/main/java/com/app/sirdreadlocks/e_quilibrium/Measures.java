@@ -10,20 +10,15 @@ import android.hardware.SensorManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.util.HashMap;
-import java.util.Map;
 
 import static java.lang.Thread.sleep;
 
@@ -89,7 +84,7 @@ public class Measures extends AppCompatActivity {
                     asyncTest.cancel(true);
 
                 Intent intent =
-                        new Intent(Measures.this, Results.class);
+                        new Intent(Measures.this, PosturalResults.class);
                 intent.putExtra("RESULTS",results);
                 intent.putExtra("PATIENT",currentPat);
 

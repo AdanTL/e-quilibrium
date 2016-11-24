@@ -13,6 +13,13 @@ import android.util.Log;
  */
 
 public class NewTestAlert extends DialogFragment {
+
+    private Patient patient;
+
+    public NewTestAlert(Patient patient) {
+        this.patient = patient;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -26,6 +33,7 @@ public class NewTestAlert extends DialogFragment {
                     public void onClick(DialogInterface dialog, int item) {
                         Intent intent = new Intent(getContext(),Measures.class);
                         intent.putExtra("TYPE",items[item]);
+                        intent.putExtra("PATIENT",patient);
                         startActivity(intent);
                     }
                 });

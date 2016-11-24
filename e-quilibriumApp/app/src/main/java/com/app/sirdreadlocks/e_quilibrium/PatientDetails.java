@@ -41,6 +41,9 @@ public class PatientDetails extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Intent intent = new Intent(this,PosturalResults.class);
+        intent.putExtra("PATIENT",patient);
+
         patient = (Patient) getIntent().getSerializableExtra("PATIENT");
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference(auth.getCurrentUser().getUid()+"/tests/"+patient.getId());
@@ -71,7 +74,7 @@ public class PatientDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                NewTestAlert alert = new NewTestAlert();
+                NewTestAlert alert = new NewTestAlert(patient);
                 String tag = "Alert";
                 alert.show(fragmentManager,tag);
             }

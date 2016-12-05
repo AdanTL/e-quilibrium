@@ -47,10 +47,10 @@
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/txtCard2"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/txtCard1"
         app:layout_constraintLeft_toLeftOf="@+id/txtCard1"
-        android:hint="Email" />
+        android:hint="Email"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/etxtBirthdate" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -76,4 +76,16 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@+id/txtPhone" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/etxtBirthdate"
+        app:layout_constraintLeft_toLeftOf="@+id/txtCard1"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txtCard1"
+        android:hint="Birthdate" />
+
 </android.support.constraint.ConstraintLayout>

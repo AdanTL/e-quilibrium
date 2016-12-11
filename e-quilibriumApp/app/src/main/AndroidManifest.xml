@@ -32,6 +32,7 @@
             android:label="New Patient" />
         <activity
             android:name=".ListPatients"
+            android:label="Patient List"
             android:configChanges="screenSize|orientation" />
         <activity
             android:name=".PatientDetails"

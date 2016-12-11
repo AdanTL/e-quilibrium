@@ -9,45 +9,7 @@
     android:fitsSystemWindows="true"
     tools:context="com.app.sirdreadlocks.e_quilibrium.ListPatients">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:clickable="true"
-        tools:context="com.app.sirdreadlocks.e_quilibrium.ListPatients">
-
-        <android.support.v7.widget.Toolbar
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/appbar"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_width="match_parent"
-            android:minHeight="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-        <FrameLayout
-            android:id="@+id/content_frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:id="@+id/txtFilter"
-                android:contentDescription="Name filter"
-                android:selectAllOnFocus="false"
-                android:inputType="textFilter" />
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/listPatient"
-                android:layout_below="@+id/txtFilter"/>
-        </FrameLayout>
-    </LinearLayout>
+    <include layout="@layout/content_patient_list"/>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navview"

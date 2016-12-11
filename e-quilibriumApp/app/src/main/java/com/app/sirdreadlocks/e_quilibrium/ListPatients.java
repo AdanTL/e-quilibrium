@@ -1,6 +1,8 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -45,6 +47,14 @@ public class ListPatients extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.appbar);
         setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ListPatients.this, NewPatient.class));
+            }
+        });
 
         txtFilter = (EditText)findViewById(R.id.txtFilter);
 

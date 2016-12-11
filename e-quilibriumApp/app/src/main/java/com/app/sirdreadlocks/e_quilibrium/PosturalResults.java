@@ -100,7 +100,7 @@ public class PosturalResults extends AppCompatActivity {
     /*Override Key Back to step back straight to PatientDetails*/
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == event.KEYCODE_BACK)
+        if(keyCode == KeyEvent.KEYCODE_BACK)
             startActivity(new Intent(PosturalResults.this,PatientDetails.class).putExtra("PATIENT", currentPat));
         return super.onKeyDown(keyCode, event);
     }

@@ -34,7 +34,7 @@
             android:name=".PatientDetails"
             android:configChanges="screenSize|orientation"
             android:label="@string/title_activity_patient_details" />
-        <activity android:name=".FallResults"></activity>
+        <activity android:name=".FallResults"/>
     </application>
 
 </manifest>

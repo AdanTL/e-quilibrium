@@ -9,15 +9,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:configChanges="screenSize|orientation">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".Measures"
             android:screenOrientation="landscape" />
         <activity
@@ -32,13 +23,17 @@
             android:label="New Patient" />
         <activity
             android:name=".ListPatients"
-            android:label="Patient List"
-            android:configChanges="screenSize|orientation" />
+            android:configChanges="screenSize|orientation"
+            android:label="e-quilibrium">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".PatientDetails"
             android:configChanges="screenSize|orientation"
-            android:label="@string/title_activity_patient_details"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_patient_details" />
         <activity android:name=".FallResults"></activity>
     </application>
 

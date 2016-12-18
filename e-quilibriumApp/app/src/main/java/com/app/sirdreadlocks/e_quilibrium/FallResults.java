@@ -2,21 +2,24 @@ package com.app.sirdreadlocks.e_quilibrium;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.db.chart.Tools;
+import com.db.chart.animation.Animation;
+import com.db.chart.animation.easing.CubicEase;
+import com.db.chart.model.BarSet;
+import com.db.chart.view.ChartView;
+import com.db.chart.view.HorizontalStackBarChartView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -26,7 +29,6 @@ public class FallResults extends AppCompatActivity {
     private Map<String, Double[]> results;
     private Map<String, Double[]> resultsSorted;
     private Patient currentPat;
-    protected HorizontalBarChart mChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class FallResults extends AppCompatActivity {
         // sort Map
         resultsSorted = new TreeMap<>(results);
 
-        // layout references
+/*        // layout references
         imgRadar = (ImageView) findViewById(R.id.imgRadar);
         txtOSI_AS = (TextView) findViewById(R.id.txtOSI_AS);
         txtOSI_SD = (TextView) findViewById(R.id.txtOSI_SD);
@@ -50,68 +52,32 @@ public class FallResults extends AppCompatActivity {
         txtOSI_AS.setText(""+getOSI_AS()+"");
         txtOSI_SD.setText(""+getOSI_SD()+"");
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
-        imgRadar.setImageBitmap(bmp);
+        imgRadar.setImageBitmap(bmp);*/
 
-        //Chart
-        mChart = (HorizontalBarChart) findViewById(R.id.chart);
-        // mChart.setHighlightEnabled(false);
+/*        // Do not assume the code below as final. For a complete customization and well behaviour of your chart please check the documentation, wiki, and code examples.
+        HorizontalStackChartView chart = (HorizontalStackChartView) findViewById(R.id.chart);
 
-        mChart.setDrawBarShadow(false);
+        // Stacked chart customization
+        BarSet dataset = new BarSet();
+        chart.setBarSpacing(84.0);
+        chart.addData(dataset);
 
-        mChart.setDrawValueAboveBar(true);
+        // Generic chart customization
+        // Paint object used to draw Grid
+        Paint gridPaint = new Paint();
+        gridPaint.setColor(Color.parseColor('#727272'));
+        gridPaint.setStyle(Paint.Style.STROKE);
+        gridPaint.setAntiAlias(true);
+        gridPaint.setStrokeWidth(Tools.fromDpToPx(1.0));
+        chart.setGrid(ChartView.GridType.FULL, gridPaint);
+        chart.setLabelsFormat(new DecimalFormat('#'+));
 
-        mChart.getDescription().setEnabled(false);
+        // Animation customization
+        Animation anim = new Animation(500);
+        anim.setEasing(new CubicEase());
+        anim.setStartPoint(0.5, 0.5);
+        chart.show(anim);*/
 
-        // if more than 60 entries are displayed in the chart, no values will be
-        // drawn
-        mChart.setMaxVisibleValueCount(60);
-
-        // scaling can now only be done on x- and y-axis separately
-        mChart.setPinchZoom(false);
-
-        // draw shadows for each bar that show the maximum value
-        // mChart.setDrawBarShadow(true);
-
-        mChart.setDrawGridBackground(false);
-
-        XAxis xl = mChart.getXAxis();
-        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-        //xl.setTypeface(mTfLight);
-        xl.setDrawAxisLine(true);
-        xl.setDrawGridLines(false);
-        xl.setGranularity(10f);
-
-        YAxis yl = mChart.getAxisLeft();
-        //yl.setTypeface(mTfLight);
-        yl.setDrawAxisLine(true);
-        yl.setDrawGridLines(true);
-        yl.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-//        yl.setInverted(true);
-
-        YAxis yr = mChart.getAxisRight();
-        //yr.setTypeface(mTfLight);
-        yr.setDrawAxisLine(true);
-        yr.setDrawGridLines(false);
-        yr.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-//        yr.setInverted(true);
-
-
-        BarDataSet setBar = (BarDataSet)mChart.getData().getDataSetByIndex(0);
-        ArrayList<BarEntry> values = new ArrayList<>();
-        values.add(new BarEntry(0.0f,2.0f));
-        setBar.setValues(values);
-
-        mChart.setFitBars(true);
-        mChart.animateY(2500);
-
-
-        Legend l = mChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-        l.setFormSize(8f);
-        l.setXEntrySpace(4f);
     }
 
 

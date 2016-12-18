@@ -82,8 +82,18 @@ public class Measures extends AppCompatActivity {
                 if(asyncTest != null)
                     asyncTest.cancel(true);
 
-                Intent intent =
-                        new Intent(Measures.this, PosturalResults.class);
+                Intent intent = null;
+
+                switch (type){
+                    case "Postural Stability":
+                        intent = new Intent(Measures.this, PosturalResults.class);break;
+                    case "Athlete Single Leg":
+                        intent = new Intent(Measures.this, PosturalResults.class);break;
+                    case "Fall Risk":
+                        intent = new Intent(Measures.this, FallResults.class);break;
+                }
+
+
                 intent.putExtra("RESULTS",results);
                 intent.putExtra("PATIENT",currentPat);
 

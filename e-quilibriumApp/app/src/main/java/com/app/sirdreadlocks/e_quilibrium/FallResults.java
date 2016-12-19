@@ -9,13 +9,6 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.db.chart.Tools;
-import com.db.chart.animation.Animation;
-import com.db.chart.animation.easing.CubicEase;
-import com.db.chart.model.BarSet;
-import com.db.chart.view.ChartView;
-import com.db.chart.view.HorizontalStackBarChartView;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +36,7 @@ public class FallResults extends AppCompatActivity {
         // sort Map
         resultsSorted = new TreeMap<>(results);
 
-/*        // layout references
+        // layout references
         imgRadar = (ImageView) findViewById(R.id.imgRadar);
         txtOSI_AS = (TextView) findViewById(R.id.txtOSI_AS);
         txtOSI_SD = (TextView) findViewById(R.id.txtOSI_SD);
@@ -52,32 +45,7 @@ public class FallResults extends AppCompatActivity {
         txtOSI_AS.setText(""+getOSI_AS()+"");
         txtOSI_SD.setText(""+getOSI_SD()+"");
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
-        imgRadar.setImageBitmap(bmp);*/
-
-/*        // Do not assume the code below as final. For a complete customization and well behaviour of your chart please check the documentation, wiki, and code examples.
-        HorizontalStackChartView chart = (HorizontalStackChartView) findViewById(R.id.chart);
-
-        // Stacked chart customization
-        BarSet dataset = new BarSet();
-        chart.setBarSpacing(84.0);
-        chart.addData(dataset);
-
-        // Generic chart customization
-        // Paint object used to draw Grid
-        Paint gridPaint = new Paint();
-        gridPaint.setColor(Color.parseColor('#727272'));
-        gridPaint.setStyle(Paint.Style.STROKE);
-        gridPaint.setAntiAlias(true);
-        gridPaint.setStrokeWidth(Tools.fromDpToPx(1.0));
-        chart.setGrid(ChartView.GridType.FULL, gridPaint);
-        chart.setLabelsFormat(new DecimalFormat('#'+));
-
-        // Animation customization
-        Animation anim = new Animation(500);
-        anim.setEasing(new CubicEase());
-        anim.setStartPoint(0.5, 0.5);
-        chart.show(anim);*/
-
+        imgRadar.setImageBitmap(bmp);
     }
 
 

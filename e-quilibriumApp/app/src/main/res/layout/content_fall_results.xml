@@ -5,6 +5,72 @@
 
     <include layout="@layout/toolbar" android:id="@+id/appbar"/>
 
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:ap="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:nestedScrollingEnabled="false">
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtOSI_AS"
+            ap:layout_constraintTop_toTopOf="@+id/textView16"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView13" />
+
+        <TextView
+            android:text="Overall Stability Index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView16"
+            ap:layout_constraintTop_toBottomOf="@+id/textView13"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            ap:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="16dp" />
+
+        <TextView
+            android:text="Actual Score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView13"
+            android:layout_marginTop="16dp"
+            ap:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="24dp"
+            ap:layout_constraintLeft_toRightOf="@+id/textView16"
+            android:layout_marginLeft="24dp" />
+
+        <TextView
+            android:text="STD Dev."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView14"
+            android:layout_marginTop="16dp"
+            ap:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="32dp"
+            ap:layout_constraintLeft_toRightOf="@+id/textView13"
+            android:layout_marginLeft="32dp" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtOSI_SD"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView14"
+            ap:layout_constraintTop_toTopOf="@+id/textView16" />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imgRadar"/>
+
 
 
 </LinearLayout>

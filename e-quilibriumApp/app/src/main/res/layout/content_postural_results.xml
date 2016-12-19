@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar" android:id="@+id/appbar"/>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:ap="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:nestedScrollingEnabled="false">
+
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtOSI_AS"
+            ap:layout_constraintTop_toTopOf="@+id/textView16"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView13" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtMLI_SD"
+            ap:layout_constraintTop_toTopOf="@+id/textView9"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView14" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTQ_II"
+            ap:layout_constraintTop_toTopOf="@+id/textView11"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView14" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTZ_A"
+            ap:layout_constraintTop_toTopOf="@+id/textView17"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView13" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTQ_IV"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView14"
+            android:layout_marginTop="8dp"
+            ap:layout_constraintTop_toBottomOf="@+id/txtTQ_II" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtAPI_AS"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView13"
+            ap:layout_constraintTop_toTopOf="@+id/textView8" />
+
+        <TextView
+            android:text="Overall Stability Index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView16"
+            ap:layout_constraintTop_toBottomOf="@+id/textView13"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            ap:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="16dp" />
+
+        <TextView
+            android:text="% Time in Zone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView17"
+            android:layout_marginTop="8dp"
+            ap:layout_constraintTop_toBottomOf="@+id/textView9"
+            android:layout_marginStart="16dp"
+            ap:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="16dp" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTQ_I"
+            ap:layout_constraintTop_toTopOf="@+id/textView11"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView13" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtMLI_AS"
+            ap:layout_constraintTop_toTopOf="@+id/textView9"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView13" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtAPI_SD"
+            ap:layout_constraintTop_toTopOf="@+id/textView8"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView14" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/imgRadar"
+            android:layout_marginStart="16dp"
+            ap:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            ap:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="16dp"
+            ap:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="16dp"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="false"
+            android:layout_marginTop="8dp"
+            ap:layout_constraintTop_toBottomOf="@+id/txtTQ_III" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtOSI_SD"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView14"
+            ap:layout_constraintTop_toTopOf="@+id/textView16" />
+
+        <TextView
+            android:text="Anterior/Posterior Index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView8"
+            android:layout_marginStart="16dp"
+            ap:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            ap:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+        <TextView
+            android:text="Medial Lateral Index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView9"
+            android:layout_marginStart="16dp"
+            ap:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            ap:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTZ_B"
+            ap:layout_constraintTop_toTopOf="@+id/textView17"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView14" />
+
+        <TextView
+            android:text="% Time in Quadrant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView11"
+            android:layout_marginStart="16dp"
+            ap:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="16dp"
+            ap:layout_constraintTop_toBottomOf="@+id/txtTZ_C"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTQ_III"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView13"
+            android:layout_marginTop="8dp"
+            ap:layout_constraintTop_toBottomOf="@+id/txtTQ_I" />
+
+        <TextView
+            android:text="Actual Score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView13"
+            android:layout_marginTop="16dp"
+            ap:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="24dp"
+            ap:layout_constraintLeft_toRightOf="@+id/textView16"
+            android:layout_marginLeft="24dp" />
+
+        <TextView
+            android:text="STD Dev."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView14"
+            android:layout_marginTop="16dp"
+            ap:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="32dp"
+            ap:layout_constraintLeft_toRightOf="@+id/textView13"
+            android:layout_marginLeft="32dp" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTZ_C"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView13"
+            ap:layout_constraintTop_toBottomOf="@+id/txtTZ_A"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTZ_D"
+            ap:layout_constraintLeft_toLeftOf="@+id/textView14"
+            ap:layout_constraintTop_toBottomOf="@+id/txtTZ_B"
+            android:layout_marginTop="8dp" />
+
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

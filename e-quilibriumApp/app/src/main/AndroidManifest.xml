@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Measures"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PosturalResults"
             android:configChanges="screenSize|orientation"

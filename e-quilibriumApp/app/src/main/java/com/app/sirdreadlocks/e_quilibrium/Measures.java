@@ -10,8 +10,11 @@ import android.hardware.SensorManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,10 +26,11 @@ import java.util.HashMap;
 import static java.lang.Thread.sleep;
 
 public class Measures extends AppCompatActivity {
+    private DrawerLayout drawerLayout;
     private TextView textX, textY, txtCountDown;
     private SensorManager sensorManager;
     private Sensor accelerometer, magnetometer;
-    private Button btnCOB, btnStart, btnEnd, btnSettings;
+    private Button btnCOB, btnStart, btnEnd;
     private HashMap<String, Double[]> results, calib;
     private AsyncTest asyncTest;
     private AsyncCalib asyncCalib;
@@ -55,26 +59,44 @@ public class Measures extends AppCompatActivity {
         
         setContentView(R.layout.activity_measures);
 
+        //Setup Navigation View
+        Toolbar toolbar = (Toolbar) findViewById(R.id.appbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(type +" test");
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.openDrawer, R.string.closeDrawer){
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+
+        //Setting the actionbarToggle to drawer layout
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+
+        //calling sync state is necessay or else your hamburger icon wont show up
+        actionBarDrawerToggle.syncState();
+
 
         mCanvasView = (CanvasView) findViewById(R.id.canvasView);
 
 
 
-        textX = (TextView) findViewById(R.id.textX);
-        textY = (TextView) findViewById(R.id.textY);
+        textX = (TextView) findViewById(R.id.txtX);
+        textY = (TextView) findViewById(R.id.txtY);
         txtCountDown = (TextView) findViewById(R.id.txtCountDown);
 
-        btnSettings = (Button) findViewById(R.id.btnSettings);
         btnCOB = (Button) findViewById(R.id.btnCOB);
         btnStart = (Button) findViewById(R.id.btnStart);
         btnEnd = (Button) findViewById(R.id.btnEnd);
-
-        btnSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Measures.this, Settings.class));
-            }
-        });
 
         btnEnd.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
@@ -161,11 +183,11 @@ public class Measures extends AppCompatActivity {
     }
 
     
-    public Double getPitch(){
-        return pitch - cob_x;
+    public Double getY(){
+        return pitch - cob_y;
     }
-    public Double getRoll(){
-        return roll - cob_y;
+    public Double getX(){
+        return roll - cob_x;
     }
 
     public SensorEventListener sensorListener = new SensorEventListener() {
@@ -187,14 +209,14 @@ public class Measures extends AppCompatActivity {
 
                     //Conversion of Math.toDegrees is not so exact as I would like
                     //Pitch is negative to fit with horizontal orientation
-                    pitch = - Math.toDegrees(orientation[1]);
+                    pitch = Math.toDegrees(orientation[1]);
                     roll = Math.toDegrees(orientation[2]);
 
                     //Show all data but only need pitch(rotation in X axis) and roll (rotation in Y)
                     /*    textX.setText("X : " + pitch.floatValue() + " º");//pitch goes from -90 to 90
                         textY.setText("Y : " + roll.floatValue() + " º");//roll goes from -90 to 90*/
-                        textX.setText("X : " + getPitch() + " º");//pitch with COB
-                        textY.setText("Y : " + getRoll() + " º");//roll with COB
+                        textX.setText("X : " + getX() + " º");//pitch with COB
+                        textY.setText("Y : " + getY() + " º");//roll with COB
                 }
             }
         }
@@ -205,7 +227,7 @@ public class Measures extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
 
             //Empty while to wait sensors' set up
-            while (getPitch()==null || getRoll()==null){}
+            while (getY()==null || getX()==null){}
 
             //for(int i=0; i<400; i++){
             while(!cdFinished){
@@ -216,7 +238,7 @@ public class Measures extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                publishProgress(getPitch(),getRoll());
+                publishProgress(getX(),getY());
 
                 if(isCancelled())
                     break;
@@ -250,7 +272,7 @@ public class Measures extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
 
             //Empty while to wait sensors' set up
-            while (getPitch()==null || getRoll()==null){}
+            while (getY()==null || getX()==null){}
 
             for(int i=0; i<60; i++){
                 //get samples at 20HZ
@@ -260,7 +282,7 @@ public class Measures extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                publishProgress(getPitch(),getRoll());
+                publishProgress(getX(),getY());
 
                 if(isCancelled())
                     break;

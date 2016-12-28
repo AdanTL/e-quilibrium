@@ -20,35 +20,37 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.sirdreadlocks.e_quilibrium.sensor.SensorFusion;
+
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
 import static java.lang.Thread.sleep;
 
-public class Measures extends AppCompatActivity {
+public class Measures extends AppCompatActivity implements SensorEventListener {
     private DrawerLayout drawerLayout;
     private TextView textX, textY, txtCountDown;
     private SensorManager sensorManager;
-    private Sensor accelerometer, magnetometer;
     private Button btnCOB, btnStart, btnEnd;
     private HashMap<String, Double[]> results, calib;
     private AsyncTest asyncTest;
     private AsyncCalib asyncCalib;
-    private Double pitch = null, roll = null, cob_x = 0.0, cob_y = 0.0;
+    private Double cob_x = 0.0, cob_y = 0.0;
     private CanvasView mCanvasView;
     private Bitmap bmp;
     private boolean cdFinished;
-    private SharedPreferences pref;
     private Patient currentPat;
     private String type;
+    private SensorFusion sensorFusion;
 
     public void onCreate(Bundle savedInstanceState) {
 
-        //pref = PreferenceManager.getDefaultSharedPreferences(R.xml.preferences);
+        //Sensors setters
+        sensorFusion = new SensorFusion();
+        sensorFusion.setMode(SensorFusion.Mode.FUSION);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        registerSensorManagerListeners();
 
         super.onCreate(savedInstanceState);
 
@@ -85,10 +87,8 @@ public class Measures extends AppCompatActivity {
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
-
+        //layout setters
         mCanvasView = (CanvasView) findViewById(R.id.canvasView);
-
-
 
         textX = (TextView) findViewById(R.id.txtX);
         textY = (TextView) findViewById(R.id.txtY);
@@ -138,8 +138,7 @@ public class Measures extends AppCompatActivity {
 
     public void onResume() {
         super.onResume();
-        sensorManager.registerListener(sensorListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(sensorListener, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+        registerSensorManagerListeners();
 
         btnStart.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -172,55 +171,64 @@ public class Measures extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
+    public void registerSensorManagerListeners() {
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_FASTEST);
+
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE),
+                SensorManager.SENSOR_DELAY_FASTEST);
+
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
+                SensorManager.SENSOR_DELAY_FASTEST);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
-        sensorManager.unregisterListener(sensorListener);
+        sensorManager.unregisterListener(this);
     }
 
-    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        switch (event.sensor.getType()) {
+            case Sensor.TYPE_ACCELEROMETER:
+                sensorFusion.setAccel(event.values);
+                sensorFusion.calculateAccMagOrientation();
+                break;
+
+            case Sensor.TYPE_GYROSCOPE:
+                sensorFusion.gyroFunction(event);
+                break;
+
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                sensorFusion.setMagnet(event.values);
+                break;
+        }
+        textX.setText(sensorFusion.getRoll()+"º");
+        textY.setText(sensorFusion.getPitch()+"º");
+    }
+
     public Double getY(){
-        return pitch - cob_y;
+        return sensorFusion.getPitch() - cob_y;
     }
     public Double getX(){
-        return roll - cob_x;
+        return sensorFusion.getRoll() - cob_x;
     }
-
-    public SensorEventListener sensorListener = new SensorEventListener() {
-        public void onAccuracyChanged(Sensor sensor, int acc) { }
-        float[] mGravity;
-        float[] mGeomagnetic;
-        public void onSensorChanged(SensorEvent event) {
-            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
-                mGravity = event.values;
-            if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
-                mGeomagnetic = event.values;
-            if (mGravity != null && mGeomagnetic != null) {
-                float R[] = new float[9];
-                float I[] = new float[9];
-                boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
-                if (success) {
-                    float orientation[] = new float[3];
-                    SensorManager.getOrientation(R, orientation);
-
-                    //Conversion of Math.toDegrees is not so exact as I would like
-                    //Pitch is negative to fit with horizontal orientation
-                    pitch = Math.toDegrees(orientation[1]);
-                    roll = Math.toDegrees(orientation[2]);
-
-                    //Show all data but only need pitch(rotation in X axis) and roll (rotation in Y)
-                    /*    textX.setText("X : " + pitch.floatValue() + " º");//pitch goes from -90 to 90
-                        textY.setText("Y : " + roll.floatValue() + " º");//roll goes from -90 to 90*/
-                        textX.setText("X : " + getX() + " º");//pitch with COB
-                        textY.setText("Y : " + getY() + " º");//roll with COB
-                }
-            }
-        }
-    };
 
     private class AsyncTest extends AsyncTask<Void, Double, Boolean>{
         @Override

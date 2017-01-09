@@ -54,6 +54,9 @@ public class ListPatients extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_patients);
 
+        //Offline mode
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         //Authentication setup
 
         FirebaseAuth auth = FirebaseAuth.getInstance();

@@ -16,6 +16,8 @@ public class NewTestAlert extends DialogFragment {
 
     private Patient patient;
 
+    public NewTestAlert(){}
+
     public NewTestAlert(Patient patient) {
         this.patient = patient;
     }

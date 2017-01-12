@@ -3,6 +3,7 @@ package com.app.sirdreadlocks.e_quilibrium;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 
@@ -13,10 +14,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
+import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,14 +42,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class ListPatients extends AppCompatActivity {
+public class ListPatients extends AppCompatActivity implements SearchView.OnQueryTextListener{
     //private List patients;
     private HashMap<String,Patient> patients;
     private RecyclerView listPatient;
     private DatabaseReference database;
     private FirebaseAuth auth;
     private PatientsAdapter adapter;
-    private EditText txtFilter;
     private DrawerLayout drawerLayout;
     private static final int RC_SIGN_IN = 123;
 
@@ -78,6 +82,29 @@ public class ListPatients extends AppCompatActivity {
                     RC_SIGN_IN);
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setOnQueryTextListener(this);
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        adapter.getFilter().filter(query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.getFilter().filter(newText);
+        return false;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -137,8 +164,6 @@ public class ListPatients extends AppCompatActivity {
             }
         });
 
-        txtFilter = (EditText)findViewById(R.id.txtFilter);
-
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference(auth.getCurrentUser().getUid()+"/patients");
 
@@ -163,21 +188,5 @@ public class ListPatients extends AppCompatActivity {
         listPatient.setHasFixedSize(true);
         listPatient.setLayoutManager(new LinearLayoutManager(this));
 
-        txtFilter.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.getFilter().filter(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 }

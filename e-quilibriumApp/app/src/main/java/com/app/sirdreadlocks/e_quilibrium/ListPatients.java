@@ -59,7 +59,7 @@ public class ListPatients extends AppCompatActivity implements SearchView.OnQuer
         setContentView(R.layout.activity_list_patients);
 
         //Offline mode
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         //Authentication setup
 
@@ -167,14 +167,18 @@ public class ListPatients extends AppCompatActivity implements SearchView.OnQuer
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference(auth.getCurrentUser().getUid()+"/patients");
 
+        listPatient = (RecyclerView) findViewById(R.id.listPatient);
+
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 GenericTypeIndicator<HashMap<String,Patient>> t = new GenericTypeIndicator<HashMap<String, Patient>>(){};
                 patients = dataSnapshot.getValue(t);
                 if(patients != null) {
-                    adapter = new PatientsAdapter(patients);
+                    adapter = new PatientsAdapter(patients, database);
                     listPatient.setAdapter(adapter);
+                    listPatient.setHasFixedSize(true);
+                    listPatient.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 }
             }
 
@@ -184,9 +188,12 @@ public class ListPatients extends AppCompatActivity implements SearchView.OnQuer
             }
         });
 
-        listPatient = (RecyclerView) findViewById(R.id.listPatient);
-        listPatient.setHasFixedSize(true);
-        listPatient.setLayoutManager(new LinearLayoutManager(this));
-
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadUI();
+    }
+
 }

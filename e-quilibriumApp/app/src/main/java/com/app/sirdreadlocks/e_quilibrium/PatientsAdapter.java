@@ -5,9 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,13 +25,15 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.CardVi
     private ArrayList<Patient> patients;
     private ArrayList<Patient> patientsFilter;
     private CustomFilter mFilter;
+    private DatabaseReference database;
 
-    public PatientsAdapter(HashMap<String,Patient> patients){
+    public PatientsAdapter(HashMap<String,Patient> patients, DatabaseReference database){
         this.patients = new ArrayList<>();
         this.patients.addAll(patients.values());
         this.patientsFilter = new ArrayList<>();
         this.patientsFilter.addAll(patients.values());
         this.mFilter = new CustomFilter(PatientsAdapter.this);
+        this.database = database;
     }
 
     public CardViewHolder onCreateViewHolder(final ViewGroup viewGroup, int viewType) {
@@ -53,7 +59,7 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.CardVi
         return mFilter;
     }
 
-    public static class CardViewHolder extends RecyclerView.ViewHolder{
+    public class CardViewHolder extends RecyclerView.ViewHolder{
         private Patient pat;
         private View mView;
 
@@ -71,15 +77,28 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.CardVi
             });
         }
 
-        public void holderBinder(Patient pat) {
+        public void holderBinder(final Patient pat) {
             this.pat = pat;
             TextView name = (TextView) mView.findViewById(R.id.txtCard1);
             TextView email = (TextView) mView.findViewById(R.id.txtCard2);
+            Button btnDel = (Button) mView.findViewById(R.id.btnDel);
             name.setText(pat.getName());
             email.setText(pat.getEmail());
+            btnDel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    database.child(pat.getId()).removeValue();
+                    int i = patientsFilter.indexOf(pat);
+                    patientsFilter.remove(i);
+                    notifyItemRemoved(i);
+                    //v.getContext().startActivity(new Intent(v.getContext(),ListPatients.class));
+                }
+            });
         }
 
     }
+
+
 
     public class CustomFilter extends Filter {
         private PatientsAdapter patientsAdapter;
@@ -98,7 +117,11 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.CardVi
             } else {
                 final String filterPattern = constraint.toString().toLowerCase().trim();
                 for (final Patient patient : patients) {
-                    if (patient.getName().toLowerCase().contains(filterPattern)) {
+                    if (patient.getName().toLowerCase().contains(filterPattern)||
+                            patient.getId().toLowerCase().contains(filterPattern)||
+                            patient.getSurname().toLowerCase().contains(filterPattern)||
+                            patient.getEmail().toLowerCase().contains(filterPattern)||
+                            patient.getPhone().toLowerCase().contains(filterPattern)) {
                         patientsFilter.add(patient);
                     }
                 }

@@ -80,8 +80,8 @@ public class CanvasView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int height = getMeasuredHeight();
-        setMeasuredDimension(height, height);
+        int width = getMeasuredWidth();
+        setMeasuredDimension(width, width);
     }
 
     @Override

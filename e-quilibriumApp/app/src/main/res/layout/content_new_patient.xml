@@ -18,11 +18,6 @@
             android:layout_height="match_parent"
             android:isScrollContainer="false">
 
-            <include layout="@layout/toolbar" android:id="@+id/appbar"/>
-
-
-
-
             <TextView
                 android:text="ID"
                 android:layout_width="match_parent"

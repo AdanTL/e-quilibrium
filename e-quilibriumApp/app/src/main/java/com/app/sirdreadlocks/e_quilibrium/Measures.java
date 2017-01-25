@@ -22,14 +22,24 @@ import android.widget.Toast;
 
 import com.app.sirdreadlocks.e_quilibrium.sensor.SensorFusion;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 import static java.lang.Thread.sleep;
 
 public class Measures extends AppCompatActivity implements SensorEventListener {
     private DrawerLayout drawerLayout;
-    private TextView textX, textY, txtCountDown;
+    private TextView textX, textY, txtCountDown, txtIP;
     private SensorManager sensorManager;
     private Button btnCOB, btnStart, btnEnd;
     private HashMap<String, Double[]> results, calib;
@@ -41,7 +51,9 @@ public class Measures extends AppCompatActivity implements SensorEventListener {
     private boolean cdFinished;
     private Patient currentPat;
     private String type;
+    private String msgLog = "";
     private SensorFusion sensorFusion;
+    private ServerSocket httpServerSocket;
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -98,6 +110,14 @@ public class Measures extends AppCompatActivity implements SensorEventListener {
         btnStart = (Button) findViewById(R.id.btnStart);
         btnEnd = (Button) findViewById(R.id.btnEnd);
 
+        txtIP = (TextView) findViewById(R.id.txtIP);
+
+        txtIP.setText(getIpAddress() + ":"
+                + HttpServerThread.HttpServerPORT + "\n");
+
+        HttpServerThread httpServerThread = new HttpServerThread();
+        httpServerThread.start();
+
         btnEnd.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
 
@@ -142,35 +162,56 @@ public class Measures extends AppCompatActivity implements SensorEventListener {
 
         btnStart.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                cdFinished = false;
-                results = new HashMap<>();
-                mCanvasView.cleanRadar();
-                asyncTest = new AsyncTest();
-                asyncTest.execute();
-                new CountDownTimer(20000, 1000) {
-
-                    public void onTick(long millisUntilFinished) {
-                        txtCountDown.setText("seconds remaining: " + millisUntilFinished / 1000);
-                    }
-
-                    public void onFinish() {
-                        txtCountDown.setText("done!");
-                        cdFinished=true;
-                    }
-
-                }.start();
+                startTest();
             }
         });
 
         btnCOB.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                mCanvasView.cleanRadar();
-                calib = new HashMap<>();
-                asyncCalib = new AsyncCalib();
-                asyncCalib.execute();
+                cobTest();
             }
         });
 
+    }
+
+    private void startTest(){
+        cdFinished = false;
+        results = new HashMap<>();
+        mCanvasView.cleanRadar();
+        asyncTest = new AsyncTest();
+        asyncTest.execute();
+        new CountDownTimer(20000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                txtCountDown.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                txtCountDown.setText("done!");
+                cdFinished=true;
+            }
+
+        }.start();
+    }
+
+    private void cobTest(){
+        cdFinished = false;
+        mCanvasView.cleanRadar();
+        calib = new HashMap<>();
+        asyncCalib = new AsyncCalib();
+        asyncCalib.execute();
+        new CountDownTimer(3000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                txtCountDown.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                txtCountDown.setText("done!");
+                cdFinished=true;
+            }
+
+        }.start();
     }
 
     public void registerSensorManagerListeners() {
@@ -197,6 +238,19 @@ public class Measures extends AppCompatActivity implements SensorEventListener {
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (httpServerSocket != null) {
+            try {
+                httpServerSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -282,7 +336,8 @@ public class Measures extends AppCompatActivity implements SensorEventListener {
             //Empty while to wait sensors' set up
             while (getY()==null || getX()==null){}
 
-            for(int i=0; i<60; i++){
+            //for(int i=0; i<60; i++){
+            while(!cdFinished){
                 //get samples at 20HZ
                 try {
                     sleep(50);
@@ -330,6 +385,143 @@ public class Measures extends AppCompatActivity implements SensorEventListener {
         }
         cob_x += sumX / (float)(calib.size());
         cob_y += sumY / (float)(calib.size());
+    }
+
+    /*
+    * SERVER
+    *
+    *
+    * */
+
+    private String getIpAddress() {
+        String ip = "";
+        try {
+            Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
+                    .getNetworkInterfaces();
+            while (enumNetworkInterfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = enumNetworkInterfaces
+                        .nextElement();
+                Enumeration<InetAddress> enumInetAddress = networkInterface
+                        .getInetAddresses();
+                while (enumInetAddress.hasMoreElements()) {
+                    InetAddress inetAddress = enumInetAddress.nextElement();
+
+                    if (inetAddress.isSiteLocalAddress()) {
+                        ip += "SiteLocalAddress: "
+                                + inetAddress.getHostAddress() + "\n";
+                    }
+
+                }
+
+            }
+
+        } catch (SocketException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            ip += "Something Wrong! " + e.toString() + "\n";
+        }
+
+        return ip;
+    }
+
+    private class HttpServerThread extends Thread {
+
+        static final int HttpServerPORT = 8888;
+
+        @Override
+        public void run() {
+            Socket socket = null;
+
+            try {
+                httpServerSocket = new ServerSocket(HttpServerPORT);
+
+                while(true){
+                    socket = httpServerSocket.accept();
+
+                    HttpResponseThread httpResponseThread =
+                            new HttpResponseThread(
+                                    socket);
+                    httpResponseThread.start();
+                }
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private class HttpResponseThread extends Thread {
+
+        Socket socket;
+
+        HttpResponseThread(Socket socket){
+            this.socket = socket;
+        }
+
+        @Override
+        public void run() {
+            BufferedReader is;
+            PrintWriter os;
+            String request;
+
+            try {
+                is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                request = is.readLine();
+
+                os = new PrintWriter(socket.getOutputStream(), true);
+
+                String response =
+                        "<html><head></head>" +
+                                "<body>" +
+                                "<h1>e-quilibrium</h1>" +
+                                "<form action=\"Start\" method=\"post\">"+
+                                "<button name=\"foo\" value=\"Start\">Start</button>"+
+                                "</form>"+
+                                "<form action=\"GetCOB\" method=\"post\">"+
+                                "<button name=\"foo\" value=\"GetCOB\">GetCOB</button>"+
+                                "</form>"+
+                                "</body></html>";
+
+                os.print("HTTP/1.0 200" + "\r\n");
+                os.print("Content type: text/html" + "\r\n");
+                os.print("Content length: " + response.length() + "\r\n");
+                os.print("\r\n");
+                os.print(response + "\r\n");
+                os.flush();
+                socket.close();
+
+                msgLog = "Request: " + request + "\n";
+
+                Measures.this.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        String valueOf = "POST /";
+                        String delimiter = " ";
+                        String value = null;
+                        if (msgLog.contains(valueOf)){
+                            String newline =  msgLog.substring(msgLog.indexOf(valueOf) + valueOf.length() );
+                            value  = newline.substring(0, newline.indexOf(delimiter));
+                            switch (value.trim()) {
+                                case "Start":
+                                    startTest();
+                                    break;
+                                case "GetCOB":
+                                    cobTest();
+                                    break;
+                            }
+                        }
+                    }
+                });
+
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            return;
+        }
     }
 
 }

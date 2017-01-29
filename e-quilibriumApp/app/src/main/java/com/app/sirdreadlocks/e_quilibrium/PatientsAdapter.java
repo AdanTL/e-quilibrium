@@ -91,7 +91,7 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.CardVi
                     int i = patientsFilter.indexOf(pat);
                     patientsFilter.remove(i);
                     notifyItemRemoved(i);
-                    //v.getContext().startActivity(new Intent(v.getContext(),ListPatients.class));
+                    //v.getContext().startActivity(new Intent(v.getContext(),PatientList.class));
                 }
             });
         }

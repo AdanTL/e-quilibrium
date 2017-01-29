@@ -2,24 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/menu_section_1"
             android:icon="@drawable/ic_menu"
             android:title="seccion_1"/>
         <item
+            android:id="@+id/menu_section_2"
             android:icon="@drawable/ic_menu"
             android:title="seccion_2"/>
         <item
+            android:id="@+id/menu_section_3"
             android:icon="@drawable/ic_menu"
-            android:title="seccion_3"/>
+            android:title="Sign out" />
     </group>
 
-    <item android:title="otras_opciones">
-        <menu>
-            <item
-                android:icon="@drawable/ic_menu"
-                android:title="opcion_1"/>
-            <item
-                android:icon="@drawable/ic_menu"
-                android:title="opcion_2"/>
-        </menu>
-    </item>
 </menu>

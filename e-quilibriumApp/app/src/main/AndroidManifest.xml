@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.app.sirdreadlocks.e_quilibrium">
 
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -25,19 +25,28 @@
             android:name=".NewPatient"
             android:label="New Patient" />
         <activity
-            android:name=".ListPatients"
+            android:name=".PatientList"
             android:configChanges="screenSize|orientation"
-            android:label="e-quilibrium">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:label="e-quilibrium"></activity>
         <activity
             android:name=".PatientDetails"
             android:configChanges="screenSize|orientation"
             android:label="@string/title_activity_patient_details" />
-        <activity android:name=".FallResults"/>
+        <activity android:name=".FallResults" />
+        <activity android:name=".Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

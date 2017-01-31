@@ -1,6 +1,7 @@
 package com.app.sirdreadlocks.e_quilibrium;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,10 +70,13 @@ public class PatientsAdapter extends RecyclerView.Adapter<PatientsAdapter.CardVi
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent =
+                    Fragment newFragment = new PatientDetails();
+                    MainActivity feeds = (MainActivity) v.getContext();
+                    feeds.switchContent(newFragment);
+/*                    Intent intent =
                             new Intent(v.getContext(), PatientDetails.class);
                     intent.putExtra("PATIENT",pat);
-                    v.getContext().startActivity(intent);
+                    v.getContext().startActivity(intent);*/
                 }
             });
         }

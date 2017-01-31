@@ -2,9 +2,11 @@ package com.app.sirdreadlocks.e_quilibrium;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,11 +16,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.view.ViewGroup;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ui.email.SignInActivity;
@@ -34,90 +38,32 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
-public class PatientList extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class PatientList extends Fragment implements SearchView.OnQueryTextListener{
     //private List patients;
     private HashMap<String,Patient> patients;
     private RecyclerView listPatient;
     private DatabaseReference database;
     private FirebaseAuth auth;
     private PatientsAdapter adapter;
-    private DrawerLayout drawerLayout;
-    private NavigationView navView;
+
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_patients);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.content_patient_list,container,false);
 
-        //Setup Navigation View
-        Toolbar toolbar = (Toolbar) findViewById(R.id.appbar);
-        setSupportActionBar(toolbar);
+        listPatient = (RecyclerView) v.findViewById(R.id.listPatient);
 
-        getSupportActionBar().setTitle("Patients list");
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.openDrawer, R.string.closeDrawer){
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-        };
-
-        //Setting the actionbarToggle to drawer layout
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-
-        //calling sync state is necessay or else your hamburger icon wont show up
-        actionBarDrawerToggle.syncState();
-
-
-        navView = (NavigationView)findViewById(R.id.navview);
-
-        navView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-
-                        switch (menuItem.getItemId()) {
-                            case R.id.menu_section_1:
-                                break;
-                            case R.id.menu_section_2:
-                                break;
-                            case R.id.menu_section_3:
-                                AuthUI.getInstance()
-                                        .signOut(PatientList.this)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                // user is now signed out
-                                                startActivity(new Intent(PatientList.this, Login.class));
-                                                finish();
-                                            }
-                                        });
-                                break;
-                        }
-
-                        return true;
-                    }
-                });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(PatientList.this, NewPatient.class));
+               // startActivity(new Intent(PatientList.this, NewPatient.class));
             }
         });
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference(auth.getCurrentUser().getUid()+"/patients");
-
-        listPatient = (RecyclerView) findViewById(R.id.listPatient);
 
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -128,7 +74,7 @@ public class PatientList extends AppCompatActivity implements SearchView.OnQuery
                     adapter = new PatientsAdapter(patients, database);
                     listPatient.setAdapter(adapter);
                     listPatient.setHasFixedSize(true);
-                    listPatient.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    listPatient.setLayoutManager(new LinearLayoutManager(getContext()));
                 }
             }
 
@@ -138,17 +84,13 @@ public class PatientList extends AppCompatActivity implements SearchView.OnQuery
             }
         });
 
+        return v;
+
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-
-        searchView.setOnQueryTextListener(this);
-
-        return true;
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -165,7 +107,7 @@ public class PatientList extends AppCompatActivity implements SearchView.OnQuery
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
     }
 

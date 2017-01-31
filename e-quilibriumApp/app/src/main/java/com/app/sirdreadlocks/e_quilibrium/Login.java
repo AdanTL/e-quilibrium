@@ -18,7 +18,6 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
         //Offline mode
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -76,7 +75,7 @@ public class Login extends AppCompatActivity {
 
 
     private void loadUI(){
-        startActivity(new Intent(Login.this,PatientList.class));
+        startActivity(new Intent(Login.this,MainActivity.class));
     }
 
 }

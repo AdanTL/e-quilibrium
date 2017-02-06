@@ -57,8 +57,7 @@ public class PatientList extends Fragment implements SearchView.OnQueryTextListe
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-               // startActivity(new Intent(PatientList.this, NewPatient.class));
+            public void onClick(View view) {startActivity(new Intent(getActivity(), NewPatient.class));
             }
         });
 

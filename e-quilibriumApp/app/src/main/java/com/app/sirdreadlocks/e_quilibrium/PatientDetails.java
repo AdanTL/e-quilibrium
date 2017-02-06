@@ -70,17 +70,14 @@ public class PatientDetails extends Fragment implements SearchView.OnQueryTextLi
             }
         });
 
-
-
-
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-          /*      FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 NewTestAlert alert = new NewTestAlert(patient);
                 String tag = "Alert";
-                alert.show(fragmentManager,tag);*/
+                alert.show(fragmentManager,tag);
             }
         });
         return v;

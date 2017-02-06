@@ -69,11 +69,17 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
 
                         switch (menuItem.getItemId()) {
-                            case R.id.menu_section_1:
+                            case R.id.nav_patient_list:
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.frame, new PatientList()).commit();
                                 break;
-                            case R.id.menu_section_2:
+                            case R.id.nav_patient_det:
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.frame, new PatientDetails()).commit();
                                 break;
-                            case R.id.menu_section_3:
+                            case R.id.nav_results:
+                                break;
+                            case R.id.nav_sign_out:
                                 AuthUI.getInstance()
                                         .signOut(MainActivity.this)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {

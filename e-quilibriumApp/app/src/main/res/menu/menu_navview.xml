@@ -2,15 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/menu_section_1"
+            android:id="@+id/nav_patient_list"
             android:icon="@drawable/ic_menu"
-            android:title="seccion_1"/>
+            android:title="Patient List"/>
         <item
-            android:id="@+id/menu_section_2"
+            android:id="@+id/nav_patient_det"
             android:icon="@drawable/ic_menu"
-            android:title="seccion_2"/>
+            android:title="Patient Details"/>
         <item
-            android:id="@+id/menu_section_3"
+            android:id="@+id/nav_results"
+            android:icon="@drawable/ic_menu"
+            android:title="Results"/>
+        <item
+            android:id="@+id/nav_sign_out"
             android:icon="@drawable/ic_menu"
             android:title="Sign out" />
     </group>
